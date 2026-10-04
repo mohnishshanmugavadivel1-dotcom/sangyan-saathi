@@ -1,0 +1,55 @@
+{
+ "note": "SYNTHETIC register entries with invented numbers; NOT SEBI data. Used only by rc tests and suites.",
+ "entries": [
+  {
+   "list": "RA",
+   "name": "ALPHA RESEARCH PRIVATE LIMITED",
+   "reg_no": "INH000000101",
+   "validity": "Jan 01, 2024 - Perpetual"
+  },
+  {
+   "list": "RA",
+   "name": "ALPHA RESEARCH LLP",
+   "reg_no": "INH000000102",
+   "validity": "Jan 01, 2024 - Perpetual"
+  },
+  {
+   "list": "RA",
+   "name": "BETA ANALYTICS PRIVATE LIMITED",
+   "reg_no": "INH000000103",
+   "validity": "Jan 01, 2024 - Perpetual"
+  },
+  {
+   "list": "RA",
+   "name": "Rahul Sharma Proprietor of Kuber Alpha Research",
+   "reg_no": "INH000000104",
+   "validity": "Jan 01, 2024 - Perpetual"
+  },
+  {
+   "list": "IA",
+   "name": "GAMMA WEALTH ADVISERS PRIVATE LIMITED",
+   "reg_no": "INA000000201",
+   "validity": "Jan 01, 2024 - Perpetual"
+  },
+  {
+   "list": "IA",
+   "name": "GAMMA WEALTH ADVISERS PRIVATE LIMITED",
+   "reg_no": "INA000000202",
+   "validity": "Jan 01, 2024 - Perpetual"
+  },
+  {
+   "list": "RA_INACTIVE",
+   "name": "DELTA CAPITAL PRIVATE LIMITED",
+   "reg_no": "INH000000301",
+   "type": "Research Analyst",
+   "status": "Cancelled"
+  },
+  {
+   "list": "IA_INACTIVE",
+   "name": "EPSILON ADVISORS LLP",
+   "reg_no": "INA000000401",
+   "type": "Investment Adviser",
+   "status": "Surrendered"
+  }
+ ]
+}

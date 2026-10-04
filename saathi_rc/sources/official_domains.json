@@ -1,0 +1,8 @@
+{
+ "_comment": "OBSERVED = domain family seen on an official page fetched during the sprint. ASSUMED = listed from author knowledge, NOT verified in this sprint (assessed as INSUFFICIENT, never SUPPORTED). Absence from either list is NOT evidence of illegitimacy (SEBI itself links services outside sebi.gov.in).",
+ "observed_suffix": ["sebi.gov.in", "sancharsaathi.gov.in", "cybercrime.gov.in", "mha.gov.in", "pib.gov.in"],
+ "observed_exact": ["www.sebipaclrefund.co.in", "sebipaclrefund.co.in", "www.mfcentral.com", "mfcentral.com", "www.indiamarketaccess.in", "www.innovation-sandbox.in"],
+ "assumed_suffix": ["rbi.org.in", "npci.org.in", "nsdl.co.in", "cdslindia.com", "nseindia.com", "bseindia.com"],
+ "evidence_passages": ["SEBI-HOME-LINKS", "SEBI-PR14-2026-c"],
+ "org_keywords": ["sebi", "nsdl", "cdsl", "rbi", "npci", "nseindia", "bseindia", "sancharsaathi", "cybercrime", "scores"]
+}

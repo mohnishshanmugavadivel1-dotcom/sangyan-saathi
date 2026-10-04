@@ -1,0 +1,130 @@
+# -*- coding: utf-8 -*-
+"""FROZEN challenge set for the incident-state phase. Authored BEFORE any change to the engine and before any engine run on it.
+Written by the engine's author (not independent). Expectations come from the safety model in results/incident_state/STATE_MODEL.md, not from engine output.
+Hindi / Hinglish cases (lang hi / hinglish) were NOT reviewed by a fluent speaker; English cases were reviewed by nobody but the author.
+Fields: id, cat, sit (situation chosen), text, lang, ideal (ideal route), ok (acceptable routes), state (expected primary incident state), also (states that must also be active),
+actor (expected actor of the reported action: USER/THIRD/CLAIM/none), urgent_first (action id that must lead the urgent block), unc (uncertainty must be visible: follow-up question),
+sev (severity if mishandled), ambiguous (label is debatable: never counted as an obvious failure), why.
+Routes: ESCALATE (urgent bank+1930 block), ASK (follow-up posture), PENDING (stop-payment first, no incident), NORMAL (ordinary message analysis, no escalation, no incident follow-up)."""
+import json, os
+HERE = os.path.dirname(os.path.abspath(__file__))
+C = []
+EN = "en"; HG = "hinglish"; HI = "hi"
+def c(id, cat, text, ideal, state, actor, why, ok=None, sit="NO_ACTION_YET", lang=EN, also=(), urgent_first=None, unc=False, sev="medium", amb=False):
+    C.append(dict(id=id, cat=cat, sit=sit, text=text, lang=lang, ideal=ideal, ok=list(ok or [ideal]), state=state, also=list(also), actor=actor, urgent_first=urgent_first, unc=unc, sev=sev, ambiguous=amb, why=why,
+                  lang_review=("English only; reviewed by the author alone" if lang == EN else "NOT reviewed by a fluent speaker")))
+P, Q, R, S, T, U, V, W, X = "completed_with_context", "completed_no_context", "third_party_or_claim", "denial_or_abort", "uncertain_or_contradictory", "credential", "pending", "legit_everyday", "situation_conflict"
+UP, UC, UN, TP, SC, UD, PU, NI = "USER_PAID", "USER_SHARED_CREDENTIAL", "PAYMENT_UNCLEAR", "THIRD_PARTY_PAID", "SENDER_CLAIMS_PAYMENT", "USER_DENIES", "USER_PAYMENT_PENDING", "NO_INCIDENT"
+# ---- A. completed payment by the user, with a risk context: ideal ESCALATE
+c("I01", P, "Last week I wired 60,000, now they ask me for taxes before release.", "ESCALATE", UP, "USER", "The S3b S30 sentence verbatim: completed payment plus a further demand.", sev="critical")
+c("I02", P, "I sent the amount yesterday to the account the advisor gave me and now he is asking for a processing charge.", "ESCALATE", UP, "USER", "Completed payment + new demand from the counterparty.", sev="critical")
+c("I03", P, "I remitted Rs 1.2 lakh to an unknown number on Telegram for the IPO quota.", "ESCALATE", UP, "USER", "Unlisted verb; amount; unfamiliar contact. Ideal escalate; a follow-up is acceptable because the verb is unusual.", ok=["ESCALATE", "ASK"], sev="critical")
+c("I04", P, "I paid 25,000 as a refundable security deposit and they have stopped replying.", "ESCALATE", UP, "USER", "Completed payment + counterparty went silent.", sev="critical")
+c("I05", P, "I transferred the money. Now the so-called manager says I must also pay GST before I can withdraw.", "ESCALATE", UP, "USER", "Completed payment + a new fee blocks withdrawal.", sev="critical")
+c("I06", P, "Maine 40000 jama kar diye the, ab woh aur paisa maang rahe hain.", "ESCALATE", UP, "USER", "Hinglish: completed deposit + more money demanded.", lang=HG, ok=["ESCALATE", "ASK"], sev="critical")
+c("I07", P, "मैंने उन्हें 50,000 रुपये भेज दिए, अब वे और पैसे मांग रहे हैं।", "ESCALATE", UP, "USER", "Hindi: completed transfer + more money demanded.", lang=HI, ok=["ESCALATE", "ASK"], sev="critical")
+c("I08", P, "I deposited Rs 15,000 with a stranger on WhatsApp who promised double returns.", "ESCALATE", UP, "USER", "Completed payment to an unfamiliar contact with an unrealistic promise.", sev="critical")
+c("I09", P, "I paid the registration fee of 5,000 for the trading course and the mentor guarantees 30% monthly profit.", "ESCALATE", UP, "USER", "Completed payment + guaranteed-return promise.", sev="critical")
+c("I10", P, "We invested 3 lakh through their app; now I cannot withdraw anything.", "ESCALATE", UP, "USER", "Completed investment + cannot withdraw.", sev="critical")
+c("I11", P, "I made a payment of 18,500 via UPI to the number they sent, then the call got cut and nobody answers.", "ESCALATE", UP, "USER", "Light-verb construction; weak context.", ok=["ESCALATE", "ASK"], sev="high")
+c("I12", P, "I settled the unlock fee of Rs 9,999 and the company still has not released my profit.", "ESCALATE", UP, "USER", "Completed fee; promised release not delivered.", ok=["ESCALATE", "ASK"], sev="high")
+c("I13", P, "I have already paid twice; they are demanding a third payment to unlock my account.", "ESCALATE", UP, "USER", "Repeated payments + a further demand.", sev="critical")
+c("I14", P, "I paid part of it, Rs 20,000, and they want the remaining 80,000 by tonight.", "ESCALATE", UP, "USER", "Partial payment + demand for the rest under time pressure.", sev="critical")
+c("I15", P, "I handed over cash to a man who said he was from the exchange.", "ASK", UP, "USER", "No amount and an unlisted verb; an unfamiliar person. Ideal follow-up; escalation also acceptable.", ok=["ASK", "ESCALATE"], sev="high", amb=True)
+# ---- B. completed payment, no context: ideal ASK
+c("I16", Q, "I wired the money.", "ASK", UP, "USER", "Spec sentence. No context: a clear follow-up, not an urgent block.", sev="high")
+c("I17", Q, "I sent the amount yesterday.", "ASK", UP, "USER", "Spec sentence.", sev="high")
+c("I18", Q, "I paid part of it.", "ASK", UP, "USER", "Spec sentence (partial payment).", sev="high")
+c("I19", Q, "I transferred 5,000 rupees.", "ASK", UP, "USER", "Bare completed payment with an amount.", sev="high")
+c("I20", Q, "I did the transfer this morning.", "ASK", UP, "USER", "Bare completed payment, light verb.", sev="high")
+c("I21", Q, "I made the payment last night, 7,500.", "ASK", UP, "USER", "Light-verb construction + amount.", sev="high")
+c("I22", Q, "Maine paise bhej diye.", "ASK", UP, "USER", "Hinglish bare completed payment.", lang=HG, sev="high")
+c("I23", Q, "मैंने पैसे भेज दिए।", "ASK", UP, "USER", "Hindi bare completed payment.", lang=HI, sev="high")
+c("I24", Q, "I put in 10,000 yesterday.", "ASK", UN, "USER", "Unlisted phrase + amount: only the verb-independent net can see it; a LOW-confidence follow-up is the ideal.", ok=["ASK"], sev="high")
+c("I25", Q, "I forwarded the money to him.", "ASK", UP, "USER", "Unlisted verb + 'the money'.", sev="high")
+# ---- C. another person acted, or someone claims a payment: ideal NORMAL
+c("I26", R, "The broker transferred money.", "NORMAL", TP, "THIRD", "Spec sentence. The user did not pay.", sev="high")
+c("I27", R, "They said they had already paid.", "NORMAL", SC, "CLAIM", "Spec sentence. A claim by someone else.", sev="high")
+c("I28", R, "My father paid the amount.", "NORMAL", TP, "THIRD", "Spec sentence. Not the user's payment.", sev="high")
+c("I29", R, "My father paid the amount to the person who called him about a guaranteed bonus.", "ASK", TP, "THIRD", "Another person may be a victim: ask, and say that person should contact their own bank.", ok=["ASK"], sev="high")
+c("I30", R, "The agent sent me a screenshot that says I paid 50,000, but I never made this payment.", "NORMAL", SC, "CLAIM", "A claim plus an explicit denial.", sev="high")
+c("I31", R, "He said I sent the money last week. I did not.", "NORMAL", SC, "CLAIM", "Someone else's claim about the user, denied by the user.", also=[UD], sev="high")
+c("I32", R, "The company says the payment was received and my profit will be released after tax.", "ASK", SC, "CLAIM", "Debatable: a sender's passive claim that implies the user paid. A follow-up is the safer reading; ordinary analysis is also acceptable.", ok=["ASK", "NORMAL"], amb=True, sev="medium")
+c("I33", R, "My friend said he already transferred the money to the advisor and the advisor disappeared.", "ASK", SC, "CLAIM", "Debatable: a second-hand report of another person's loss.", ok=["ASK", "NORMAL"], amb=True, sev="medium")
+c("I34", R, "The broker transferred the sale proceeds to my bank account today.", "NORMAL", TP, "THIRD", "Legitimate: money arrived in the user's account.", sev="high")
+c("I35", R, "Unhone kaha ki unhone paise bhej diye hain.", "NORMAL", SC, "CLAIM", "Hinglish: they said they sent the money.", lang=HG, sev="high")
+c("I36", R, "पापा ने पैसे भेज दिए।", "NORMAL", TP, "THIRD", "Hindi: father sent the money.", lang=HI, sev="high")
+c("I37", R, "The sender says I must pay a release fee.", "NORMAL", NI, "none", "Spec sentence. A demand, not a payment; ordinary analysis (a stop-payment block would also be reasonable).", ok=["NORMAL", "PENDING"], sev="medium")
+# ---- D. denial / abandonment: ideal NORMAL
+c("I38", S, "I never paid them.", "NORMAL", UD, "USER", "Spec sentence.", sev="critical")
+c("I39", S, "I was about to pay but stopped.", "NORMAL", UD, "USER", "Spec sentence. Aborted; not a payment and not pending.", ok=["NORMAL", "PENDING"], sev="high")
+c("I40", S, "I have not paid anything and I haven't shared any code, but they keep calling.", "NORMAL", UD, "USER", "Double denial.", sev="critical")
+c("I41", S, "They asked me to read out a code, but I refused.", "NORMAL", UD, "USER", "Spec sentence. A request that was refused.", sev="critical")
+c("I42", S, "I did not transfer anything; I only wanted to check whether this offer is real.", "NORMAL", UD, "USER", "Denial with intent to verify.", sev="high")
+c("I43", S, "No, I haven't sent any money yet.", "NORMAL", UD, "USER", "Short denial.", sev="high")
+c("I44", S, "Maine paise nahi bheje, bas message aaya hai.", "NORMAL", UD, "USER", "Hinglish denial.", lang=HG, sev="high")
+c("I45", S, "मैंने कोई पैसा नहीं दिया और OTP भी नहीं बताया।", "NORMAL", UD, "USER", "Hindi double denial.", lang=HI, sev="high")
+c("I46", S, "I paid nothing, shared nothing and clicked nothing.", "NORMAL", UD, "USER", "Negation by 'nothing'.", sev="high")
+c("I47", S, "I almost paid but my bank blocked the transaction and the money never left my account.", "NORMAL", UD, "USER", "Aborted by the bank. Debatable wording; a follow-up is tolerable.", ok=["NORMAL", "ASK"], amb=True, sev="medium")
+c("I48", S, "I did not hesitate and paid the amount they asked for.", "ASK", UP, "USER", "Negation trap: 'did not hesitate' does not negate 'paid'. The counterparty demanded the amount, so escalation is also acceptable.", ok=["ASK", "ESCALATE"], sev="critical")
+c("I49", S, "I would never pay such a fee.", "NORMAL", UD, "USER", "Hypothetical refusal.", sev="medium")
+# ---- E. uncertain, contradictory, reversed, mixed timelines: ideal ASK with a visible question
+c("I50", T, "I do not remember whether the transaction went through.", "ASK", UN, "USER", "Spec sentence. Check the bank history; conditional guidance.", unc=True, sev="high")
+c("I51", T, "I paid, but the recipient returned the money.", "ASK", UN, "USER", "Spec sentence. Reversal; status unclear.", unc=True, sev="high")
+c("I52", T, "I think I may have sent something but I am not sure.", "ASK", UN, "USER", "Hedged.", unc=True, sev="high")
+c("I53", T, "I paid them on Monday. Later I told my family I never paid because I was scared.", "ASK", UN, "USER", "Contradiction inside one message.", ok=["ASK", "ESCALATE"], unc=True, sev="high", amb=True)
+c("I54", T, "I tried to send 10,000 but the app showed an error; maybe it went through.", "ASK", UN, "USER", "Attempted, outcome unknown.", unc=True, sev="high")
+c("I55", T, "I paid 5,000 last month to the same person, and today I am about to pay 20,000 more.", "ASK", UP, "USER", "Completed + pending: stop-payment must lead.", ok=["ASK", "ESCALATE"], urgent_first="A_STOP_PAYMENT", sev="critical")
+c("I56", T, "My wife paid the first instalment but I have not paid mine.", "NORMAL", TP, "THIRD", "Two people, one payment each; the user did not pay.", also=[UD], sev="medium")
+c("I57", T, "Pata nahi paisa gaya ya nahi, maine bheja tha shayad.", "ASK", UN, "USER", "Hinglish hedge.", lang=HG, unc=True, sev="high")
+c("I58", T, "मुझे याद नहीं कि पैसे गए या नहीं।", "ASK", UN, "USER", "Hindi hedge.", lang=HI, unc=True, sev="high")
+c("I59", T, "Someone paid from my account but I do not know who.", "ESCALATE", UN, "none", "Debatable: an unauthorised payment from the user's own account would be urgent; a follow-up with the conditional steps is the minimum.", ok=["ESCALATE", "ASK"], unc=True, amb=True, sev="high")
+# ---- F. credentials
+c("I60", U, "I shared a code.", "ASK", UN, "USER", "Spec sentence. 'Code' is ambiguous (referral code vs OTP): a follow-up.", ok=["ASK", "ESCALATE"], unc=True, sev="high")
+c("I61", U, "I read out the OTP to the caller who said he was from my bank.", "ESCALATE", UC, "USER", "Clear credential share.", sev="critical")
+c("I62", U, "I gave them my UPI PIN so they could send my refund.", "ESCALATE", UC, "USER", "Clear credential share.", sev="critical")
+c("I63", U, "I sent my card number and CVV on WhatsApp.", "ESCALATE", UC, "USER", "Clear credential share.", sev="critical")
+c("I64", U, "Maine OTP bata diya.", "ESCALATE", UC, "USER", "Hinglish credential share.", lang=HG, sev="critical")
+c("I65", U, "मैंने ओटीपी बता दिया।", "ESCALATE", UC, "USER", "Hindi credential share.", lang=HI, sev="critical")
+c("I66", U, "I shared a referral code with my friend for the app discount.", "NORMAL", NI, "none", "Legitimate: a referral code is not a credential.", ok=["NORMAL", "ASK"], sev="medium")
+c("I67", U, "I received an OTP for my own login and entered it in the bank's app.", "NORMAL", NI, "none", "Legitimate: entered, not shared.", ok=["NORMAL", "ASK"], sev="medium")
+c("I68", U, "The caller wanted my OTP but I hung up without telling him anything.", "NORMAL", UD, "USER", "Request refused.", sev="critical")
+c("I69", U, "I paid the fee and also shared the OTP they texted me.", "ESCALATE", UC, "USER", "Payment and credential together: one escalation, both states shown.", also=[UP], sev="critical")
+c("I70", U, "I did not pay, but I did share my password with him.", "ESCALATE", UC, "USER", "Negation trap: payment denied, credential shared.", also=[UD], sev="critical")
+c("I71", U, "They told me to share my OTP, so I shared my OTP.", "ESCALATE", UC, "USER", "Request followed.", sev="critical")
+c("I72", U, "Please never share your OTP; I have not shared mine.", "NORMAL", UD, "USER", "Advice + denial.", sev="high")
+c("I73", U, "I will not share my OTP with anyone.", "NORMAL", UD, "USER", "Future refusal.", sev="medium")
+# ---- G. pending
+c("I74", V, "I am about to transfer 30,000 to the account he gave me.", "PENDING", PU, "USER", "The S3 D09 form with new wording; 'gave' is the sender's act.", urgent_first="A_STOP_PAYMENT", sev="critical")
+c("I75", V, "They want me to pay today and I am ready to send it.", "PENDING", PU, "USER", "Pending.", urgent_first="A_STOP_PAYMENT", sev="critical")
+c("I76", V, "Main aaj raat 20000 bhejne wala hoon.", "PENDING", PU, "USER", "Hinglish pending.", lang=HG, urgent_first="A_STOP_PAYMENT", sev="critical")
+c("I77", V, "मैं कल पैसे जमा करने वाली हूँ।", "PENDING", PU, "USER", "Hindi pending.", lang=HI, urgent_first="A_STOP_PAYMENT", sev="critical")
+c("I78", V, "", "PENDING", PU, "none", "User selected 'about to pay', no text.", sit="PAYMENT_PENDING", urgent_first="A_STOP_PAYMENT", sev="critical")
+c("I79", V, "I already paid half of it.", "ESCALATE", UP, "USER", "Selected pending + text says half is paid: the stop-payment step leads, then the escalation steps.", ok=["ESCALATE", "ASK"], sit="PAYMENT_PENDING", urgent_first="A_STOP_PAYMENT", sev="critical")
+# ---- H. legitimate everyday: ideal NORMAL; a follow-up is tolerated (counted separately); ESCALATE is a false escalation
+c("I80", W, "I paid the school fee.", "NORMAL", UP, "USER", "Spec sentence. Legitimate; the reading is a completed user payment, which may produce a non-urgent follow-up but never an escalation.", ok=["NORMAL", "ASK"], sev="medium")
+c("I81", W, "I paid the electricity bill online yesterday and received the receipt.", "NORMAL", UP, "USER", "Legitimate.", ok=["NORMAL", "ASK"], sev="medium")
+c("I82", W, "Your payment of Rs 1,200 to Reliance Retail was successful. Ref 4839201.", "NORMAL", NI, "none", "Merchant notice, passive/second person.", sev="medium")
+c("I83", W, "Rs 5,000 has been debited from your account towards SIP on 3 Oct.", "NORMAL", NI, "none", "Bank notice.", sev="medium")
+c("I84", W, "Rs 25,000 credited to your account by NEFT.", "NORMAL", NI, "none", "Bank notice.", sev="medium")
+c("I85", W, "I transferred 3,000 to my landlord for rent and he confirmed.", "NORMAL", UP, "USER", "Legitimate.", ok=["NORMAL", "ASK"], sev="medium")
+c("I86", W, "My salary was credited today and I paid the EMI.", "NORMAL", UP, "USER", "Legitimate.", ok=["NORMAL", "ASK"], sev="medium")
+c("I87", W, "Thanks, I paid the restaurant bill by UPI; you can pay me your share.", "NORMAL", UP, "USER", "Legitimate chat.", ok=["NORMAL", "ASK", "PENDING"], sev="medium")
+c("I88", W, "We paid the premium for the policy on time, no issues.", "NORMAL", UP, "USER", "Legitimate.", ok=["NORMAL", "ASK"], sev="medium")
+c("I89", W, "The fund house debited the SIP instalment of Rs 2,000 on the 5th.", "NORMAL", NI, "none", "Notice.", sev="medium")
+c("I90", W, "Mom paid the school fee online.", "NORMAL", TP, "THIRD", "Another person, legitimate.", sev="medium")
+c("I91", W, "Please pay the pending maintenance charges by the 10th, society office.", "NORMAL", NI, "none", "A routine demand.", ok=["NORMAL", "PENDING"], sev="medium")
+c("I92", W, "I invested in an index fund through my bank's app last year.", "NORMAL", UP, "USER", "Legitimate, no amount.", ok=["NORMAL", "ASK"], sev="medium")
+c("I93", W, "I paid 500 for the movie tickets yesterday and UPI worked fine.", "NORMAL", UP, "USER", "Legitimate.", ok=["NORMAL", "ASK"], sev="medium")
+c("I94", W, "I will pay you back tomorrow for the lunch.", "NORMAL", PU, "USER", "Legitimate; the existing 'I'll pay' pending trigger (CH-08) is a known trade-off.", ok=["NORMAL", "PENDING"], sev="low")
+c("I95", W, "Maine bijli ka bill bhar diya.", "NORMAL", UP, "USER", "Hinglish legitimate: paid the electricity bill.", ok=["NORMAL", "ASK"], lang=HG, sev="medium")
+c("I96", W, "मैंने स्कूल की फीस जमा कर दी।", "NORMAL", UP, "USER", "Hindi legitimate: paid the school fee.", ok=["NORMAL", "ASK"], lang=HI, sev="medium")
+# ---- I. conflicts with the form
+c("I97", X, "I never paid anyone.", "ESCALATE", UD, "USER", "The user chose 'I already sent money'. The form wins when it reports harm (conservative); the text's denial must be shown as a disagreement, not silently ignored.", sit="PAID_MONEY", sev="medium")
+c("I98", X, "I wired the money to a stranger.", "ESCALATE", UP, "USER", "User chose 'not sure'; the text is a clear report with an unfamiliar contact.", ok=["ESCALATE", "ASK"], sit="UNSURE", sev="high")
+c("I99", X, "I clicked the link and paid 3,000 for the KYC update.", "ESCALATE", UP, "USER", "Paid + clicked, KYC pretext.", sev="critical")
+c("I100", X, "I tried to pay 5,000 but I have not completed the payment.", "NORMAL", UD, "USER", "Attempt not completed; the pending reading is also acceptable.", ok=["NORMAL", "PENDING"], sev="medium")
+ids = [x["id"] for x in C]; assert len(ids) == len(set(ids))
+with open(os.path.join(HERE, "cases_incident_state.jsonl"), "w", encoding="utf-8") as f:
+    for x in C: f.write(json.dumps(x, ensure_ascii=False) + "\n")
+print(len(C))

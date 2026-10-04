@@ -1,0 +1,26 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+
+# Environment and local secrets (this project needs none; never commit them)
+.env
+.env.*
+!.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Optional real-browser check output (written by tests/browser_check.py and tests/browser_final.py)
+# NOTE: results/incident_state/raw_results.jsonl IS required by a test and must stay tracked.
+results/browser/
+results/final_verification/

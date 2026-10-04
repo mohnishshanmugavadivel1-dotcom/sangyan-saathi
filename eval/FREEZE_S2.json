@@ -1,0 +1,9 @@
+{
+ "file": "cases_s2.jsonl",
+ "n": 69,
+ "suite_sha256": "1761529b9cf675f103f23352493f51ced0fe3ff739d175ca4db6e461861b743f",
+ "engine_tree_sha256_excl_web": "8ae0462cb56a1adfd865c8507fe84ca525bcd475fdf0175c64c94b57993640f6",
+ "frozen_at": "2026-10-03, after rc engine code was behaviourally complete and before any S2 text was run through it",
+ "note": "internally authored by the engine's author; not independent; single run enforced by run_suite.py (RUN_DONE_FREEZE_S2.json marker); results reported as-is",
+ "single_run": true
+}

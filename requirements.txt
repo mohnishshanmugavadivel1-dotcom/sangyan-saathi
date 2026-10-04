@@ -1,0 +1,2 @@
+# Runtime: the message check and the web app use only the Python standard library (Python 3.10+; developed and tested on 3.13).
+# No third-party packages are required. (This release contains no live SEBI client, so `requests` is not needed.)

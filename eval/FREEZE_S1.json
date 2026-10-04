@@ -1,0 +1,6 @@
+{
+ "file": "cases_s1.jsonl",
+ "sha256": "d730a99e29abd6976a8d176dfb6f7af5f32368bbda2eeef826bbc0e1a5a6d6cf",
+ "frozen_at": "2026-10-03 (before rc engine code existed)",
+ "note": "authored before any rc engine code; internally authored, not independent"
+}

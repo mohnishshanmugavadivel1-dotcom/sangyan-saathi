@@ -1,0 +1,642 @@
+{
+ "corpus_version": "0.1",
+ "retrieved_at_nominal": "2026-10-02T16:00:00Z",
+ "passages": [
+  {
+   "passage_id": "SEBI-PR14-2026-a",
+   "tier": "T2",
+   "publisher": "SEBI (via taxguru.in reproduction)",
+   "title": "SEBI PR No. 14/2026 - Caution to Investors on Stock Market Scams through Account Handling Services",
+   "url": "https://taxguru.in/sebi/sebi-warns-investors-account-handling-scams-promising-risk-free-profits.html",
+   "topics": [
+    "account_handling"
+   ],
+   "text": "SEBI PR No. 14/2026 - Caution to Investors on Stock Market Scams through Account Handling Services",
+   "date_of_source": "2026-02-26",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  },
+  {
+   "passage_id": "SEBI-PR14-2026-b",
+   "tier": "T2",
+   "publisher": "SEBI (via taxguru.in reproduction)",
+   "title": "SEBI PR No. 14/2026 - Caution to Investors on Stock Market Scams through Account Handling Services",
+   "url": "https://taxguru.in/sebi/sebi-warns-investors-account-handling-scams-promising-risk-free-profits.html",
+   "topics": [
+    "account_handling",
+    "credentials"
+   ],
+   "text": "SEBI PR No. 14/2026 - Caution to Investors on Stock Market Scams through Account Handling Services",
+   "date_of_source": "2026-02-26",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  },
+  {
+   "passage_id": "SEBI-PR14-2026-c",
+   "tier": "T2",
+   "publisher": "SEBI (via taxguru.in reproduction)",
+   "title": "SEBI PR No. 14/2026",
+   "url": "https://taxguru.in/sebi/sebi-warns-investors-account-handling-scams-promising-risk-free-profits.html",
+   "topics": [
+    "sebi_registration",
+    "verify_registration"
+   ],
+   "text": "SEBI PR No. 14/2026",
+   "date_of_source": "2026-02-26",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  },
+  {
+   "passage_id": "MONEYLIFE-PR27-a",
+   "tier": "T3",
+   "publisher": "Moneylife",
+   "title": "SEBI Warns Investors: Stay Away from Unregistered Platforms and Apps (reporting SEBI caution, PR 27/2025)",
+   "url": "https://moneylife.in/article/sebi-warns-investors-stay-away-from-unregistered-platforms-and-apps/76880.html",
+   "topics": [
+    "guaranteed_returns",
+    "official_platform"
+   ],
+   "text": "SEBI Warns Investors: Stay Away from Unregistered Platforms and Apps (reporting SEBI caution, PR 27/2025)",
+   "date_of_source": "2025-04-10",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": "Date shown is the article page date; SEBI PR 27/2025 itself is dated 2025-05-21 per sebi.gov.in listing - date discrepancy unresolved."
+  },
+  {
+   "passage_id": "MONEYLIFE-PR27-b",
+   "tier": "T3",
+   "publisher": "Moneylife",
+   "title": "SEBI Warns Investors: Stay Away from Unregistered Platforms and Apps",
+   "url": "https://moneylife.in/article/sebi-warns-investors-stay-away-from-unregistered-platforms-and-apps/76880.html",
+   "topics": [
+    "official_platform",
+    "ipo_claim"
+   ],
+   "text": "SEBI Warns Investors: Stay Away from Unregistered Platforms and Apps",
+   "date_of_source": "2025-04-10",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  },
+  {
+   "passage_id": "MONEYLIFE-PR27-c",
+   "tier": "T3",
+   "publisher": "Moneylife",
+   "title": "SEBI Warns Investors: Stay Away from Unregistered Platforms and Apps",
+   "url": "https://moneylife.in/article/sebi-warns-investors-stay-away-from-unregistered-platforms-and-apps/76880.html",
+   "topics": [
+    "scores_scope",
+    "unregistered"
+   ],
+   "text": "SEBI Warns Investors: Stay Away from Unregistered Platforms and Apps",
+   "date_of_source": "2025-04-10",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  },
+  {
+   "passage_id": "TEAMLEASE-PR27-a",
+   "tier": "T3",
+   "publisher": "TeamLease RegTech",
+   "title": "SEBI issued a Caution to Investors on Stock Market Scams through Social Media Platforms",
+   "url": "https://teamleaseregtech.com/updates/article/42857/sebi-issued-a-caution-to-investors-on-stock-market-scams-through-socia/",
+   "topics": [
+    "group_invite",
+    "official_platform",
+    "verify_registration"
+   ],
+   "text": "SEBI issued a Caution to Investors on Stock Market Scams through Social Media Platforms",
+   "date_of_source": "2025-05-21",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  },
+  {
+   "passage_id": "TEAMLEASE-PR27-b",
+   "tier": "T3",
+   "publisher": "TeamLease RegTech",
+   "title": "SEBI issued a Caution to Investors on Stock Market Scams through Social Media Platforms",
+   "url": "https://teamleaseregtech.com/updates/article/42857/sebi-issued-a-caution-to-investors-on-stock-market-scams-through-socia/",
+   "topics": [
+    "official_platform",
+    "ipo_claim",
+    "guaranteed_returns"
+   ],
+   "text": "SEBI issued a Caution to Investors on Stock Market Scams through Social Media Platforms",
+   "date_of_source": "2025-05-21",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  },
+  {
+   "passage_id": "UNIVEST-a",
+   "tier": "T3",
+   "publisher": "Univest",
+   "title": "SEBI Registered Stock Advisor in India: How to Find, Verify & Choose",
+   "url": "https://univest.in/blogs/sebi-registered-stock-advisor",
+   "topics": [
+    "scores_scope",
+    "reporting"
+   ],
+   "text": "SEBI Registered Stock Advisor in India: How to Find, Verify & Choose",
+   "date_of_source": "2026-04-02",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": "Commercial blog; conflicts with Moneylife on SCORES scope for unregistered entities."
+  },
+  {
+   "passage_id": "UNIVEST-b",
+   "tier": "T3",
+   "publisher": "Univest",
+   "title": "SEBI Registered Stock Advisor in India",
+   "url": "https://univest.in/blogs/sebi-registered-stock-advisor",
+   "topics": [
+    "guaranteed_returns"
+   ],
+   "text": "SEBI Registered Stock Advisor in India",
+   "date_of_source": "2026-04-02",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": "Commercial blog; single publisher for this statement."
+  },
+  {
+   "passage_id": "INDBUS-REGFMT",
+   "tier": "T3",
+   "publisher": "The Industrial Business",
+   "title": "How to Identify if a Stock Market App Is SEBI Registered Before Investing Money",
+   "url": "https://theindustrialbusiness.com/how-to-identify-if-a-stock-market-app-is-sebi-registered-before-investing-money/",
+   "topics": [
+    "sebi_registration",
+    "reg_format"
+   ],
+   "text": "How to Identify if a Stock Market App Is SEBI Registered Before Investing Money",
+   "date_of_source": "2026-06-13",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  },
+  {
+   "passage_id": "INVSIFY-REGFMT",
+   "tier": "T3",
+   "publisher": "Invsify",
+   "title": "The Complete Guide to a SEBI Registered Investment Advisor",
+   "url": "https://invsify.com/blog/sebi-registered-investment-advisor",
+   "topics": [
+    "sebi_registration",
+    "reg_format"
+   ],
+   "text": "The Complete Guide to a SEBI Registered Investment Advisor",
+   "date_of_source": "2025-08-16",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": "Example shows prefix + 9 digits."
+  },
+  {
+   "passage_id": "SANCHAR-SFC",
+   "tier": "T1",
+   "publisher": "Department of Telecommunications (Sanchar Saathi)",
+   "title": "Sanchar Saathi - Report Suspected Fraud Communication / UCC (Spam)",
+   "url": "https://www.sancharsaathi.gov.in/sfc/",
+   "topics": [
+    "chakshu_scope",
+    "chakshu_window",
+    "active_loss",
+    "report_1930"
+   ],
+   "text": "Sanchar Saathi - Report Suspected Fraud Communication / UCC (Spam)",
+   "date_of_source": "2026-10-02",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": "Fetched live; page also shows '(Report within 30 days for action)' for suspected fraud reporting."
+  },
+  {
+   "passage_id": "SANCHAR-SFC-30",
+   "tier": "T1",
+   "publisher": "Department of Telecommunications (Sanchar Saathi)",
+   "title": "Sanchar Saathi - Report Suspected Fraud Communication",
+   "url": "https://www.sancharsaathi.gov.in/sfc/",
+   "topics": [
+    "chakshu_window",
+    "chakshu_scope"
+   ],
+   "text": "Sanchar Saathi - Report Suspected Fraud Communication",
+   "date_of_source": "2026-10-02",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  },
+  {
+   "passage_id": "SANCHAR-FAQ-SCOPE",
+   "tier": "T1",
+   "publisher": "Department of Telecommunications (Sanchar Saathi)",
+   "title": "Sanchar Saathi FAQ - Chakshu",
+   "url": "https://sancharsaathi.gov.in/Home/index.jsp",
+   "topics": [
+    "chakshu_scope",
+    "active_loss"
+   ],
+   "text": "Sanchar Saathi FAQ - Chakshu",
+   "date_of_source": "2026-09-09",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": "Retrieved via search-result excerpt of the official page."
+  },
+  {
+   "passage_id": "SANCHAR-FAQ-DISCLAIMER",
+   "tier": "T1",
+   "publisher": "Department of Telecommunications (Sanchar Saathi)",
+   "title": "Sanchar Saathi FAQ - Chakshu",
+   "url": "https://sancharsaathi.gov.in/Home/index.jsp",
+   "topics": [
+    "chakshu_scope",
+    "limits"
+   ],
+   "text": "Sanchar Saathi FAQ - Chakshu",
+   "date_of_source": "2026-09-09",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  },
+  {
+   "passage_id": "SANCHAR-FAQ-EXAMPLES",
+   "tier": "T1",
+   "publisher": "Department of Telecommunications (Sanchar Saathi)",
+   "title": "Sanchar Saathi FAQ - Chakshu",
+   "url": "https://sancharsaathi.gov.in/Home/index.jsp",
+   "topics": [
+    "authority_threat",
+    "chakshu_scope"
+   ],
+   "text": "Sanchar Saathi FAQ - Chakshu",
+   "date_of_source": "2026-09-09",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  },
+  {
+   "passage_id": "NCRP-SUSPECT",
+   "tier": "T1",
+   "publisher": "Ministry of Home Affairs (I4C) - cybercrime.gov.in",
+   "title": "National Cyber Crime Reporting Portal home page",
+   "url": "https://www.cybercrime.gov.in/",
+   "topics": [
+    "report_suspect",
+    "active_loss",
+    "report_1930"
+   ],
+   "text": "National Cyber Crime Reporting Portal home page",
+   "date_of_source": "2026-08-31",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": "Page 'Last Updated: 31/08/2026'. Fetched live."
+  },
+  {
+   "passage_id": "MHA-RS-1930",
+   "tier": "T1",
+   "publisher": "Ministry of Home Affairs (Rajya Sabha reply)",
+   "title": "Rajya Sabha unstarred question reply, 11 Feb 2026",
+   "url": "https://www.mha.gov.in/MHA1/Par2017/pdfs/par2026-pdfs/RS11022026/1349.pdf",
+   "topics": [
+    "report_1930",
+    "active_loss",
+    "ncrp"
+   ],
+   "text": "Rajya Sabha unstarred question reply, 11 Feb 2026",
+   "date_of_source": "2026-02-11",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": "Retrieved via search-result excerpt of the official PDF."
+  },
+  {
+   "passage_id": "PIB-FRI-2025",
+   "tier": "T1",
+   "publisher": "PIB / Department of Telecommunications",
+   "title": "DoT Introduces 'Financial Fraud Risk Indicator (FRI)'",
+   "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2130249&reg=48&lang=2",
+   "topics": [
+    "fri",
+    "bank_side_controls"
+   ],
+   "text": "DoT Introduces 'Financial Fraud Risk Indicator (FRI)'",
+   "date_of_source": "2025-05-21",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  },
+  {
+   "passage_id": "TOI-RBI-BEAWARE",
+   "tier": "T3",
+   "publisher": "Times of India",
+   "title": "Never share confidential banking info, observe digital hygiene: RBI to public",
+   "url": "https://timesofindia.indiatimes.com/business/india-business/never-share-confidential-banking-info-observe-digital-hygiene-rbi-to-public/articleshow/90057782.cms",
+   "topics": [
+    "otp",
+    "credentials",
+    "bank_asks_otp",
+    "urgency"
+   ],
+   "text": "Never share confidential banking info, observe digital hygiene: RBI to public",
+   "date_of_source": "2022-03-07",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  },
+  {
+   "passage_id": "TOI-RBI-BEAWARE-URG",
+   "tier": "T3",
+   "publisher": "Times of India",
+   "title": "Never share confidential banking info, observe digital hygiene: RBI to public",
+   "url": "https://timesofindia.indiatimes.com/business/india-business/never-share-confidential-banking-info-observe-digital-hygiene-rbi-to-public/articleshow/90057782.cms",
+   "topics": [
+    "urgency",
+    "remote_access",
+    "credentials"
+   ],
+   "text": "Never share confidential banking info, observe digital hygiene: RBI to public",
+   "date_of_source": "2022-03-07",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  },
+  {
+   "passage_id": "TIMESNOW-RBI-OTP",
+   "tier": "T3",
+   "publisher": "Times Now",
+   "title": "RBI warns against cyber scams; don't make these mistakes or you can lose money",
+   "url": "https://www.timesnownews.com/business-economy/personal-finance/planning-investing/article/rbi-warns-against-cyber-scams-dont-make-these-mistakes-or-you-can-lose-money/624554",
+   "topics": [
+    "bank_asks_otp",
+    "otp",
+    "official_callback"
+   ],
+   "text": "RBI warns against cyber scams; don't make these mistakes or you can lose money",
+   "date_of_source": "2020-07-21",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": "Older source (2020)."
+  },
+  {
+   "passage_id": "ANALYTICS-RBI-OTP",
+   "tier": "T3",
+   "publisher": "Analytics Insight",
+   "title": "How to Stay Safe from Digital Fraud: RBI's Key Tips Explained",
+   "url": "https://www.analyticsinsight.net/amp/story/banking/how-to-stay-safe-from-digital-fraud-rbis-key-tips-explained",
+   "topics": [
+    "bank_asks_otp",
+    "otp",
+    "safe_account"
+   ],
+   "text": "How to Stay Safe from Digital Fraud: RBI's Key Tips Explained",
+   "date_of_source": "2026-03-02",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  },
+  {
+   "passage_id": "ANALYTICS-SAFEACCT",
+   "tier": "T3",
+   "publisher": "Analytics Insight",
+   "title": "How to Stay Safe from Digital Fraud: RBI's Key Tips Explained",
+   "url": "https://www.analyticsinsight.net/amp/story/banking/how-to-stay-safe-from-digital-fraud-rbis-key-tips-explained",
+   "topics": [
+    "safe_account",
+    "authority_threat"
+   ],
+   "text": "How to Stay Safe from Digital Fraud: RBI's Key Tips Explained",
+   "date_of_source": "2026-03-02",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  },
+  {
+   "passage_id": "FRIENDSTAXI-UPIPIN",
+   "tier": "T3",
+   "publisher": "FriendsTaxi blog",
+   "title": "Never Share OTPs, PINs or Passwords: Fraud Safety Guide",
+   "url": "https://blog.friendstaxi.in/never-share-otps-pins-or-passwords",
+   "topics": [
+    "upi_pin",
+    "remote_access"
+   ],
+   "text": "Never Share OTPs, PINs or Passwords: Fraud Safety Guide",
+   "date_of_source": "2026-08-06",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": "Low-authority blog attributing to NPCI; used only as one of two required distinct T3 publishers."
+  },
+  {
+   "passage_id": "CASHFREE-UPIPIN",
+   "tier": "T3",
+   "publisher": "Cashfree",
+   "title": "Fake UPI Payment App Scams: How to Spot Fake PhonePe APKs & GPay Apps",
+   "url": "https://www.cashfree.com/blog/spot-fake-upi-payment-app-scams/",
+   "topics": [
+    "upi_pin",
+    "remote_access"
+   ],
+   "text": "Fake UPI Payment App Scams: How to Spot Fake PhonePe APKs & GPay Apps",
+   "date_of_source": "2026-09-27",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  },
+  {
+   "passage_id": "CASHFREE-REMOTE",
+   "tier": "T3",
+   "publisher": "Cashfree",
+   "title": "Fake UPI Payment App Scams",
+   "url": "https://www.cashfree.com/blog/spot-fake-upi-payment-app-scams/",
+   "topics": [
+    "remote_access"
+   ],
+   "text": "Fake UPI Payment App Scams",
+   "date_of_source": "2026-09-27",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  },
+  {
+   "passage_id": "REDIFF-SEBICHECK",
+   "tier": "T3",
+   "publisher": "Rediff Moneynews (PTI)",
+   "title": "Sebi Launches 'SEBI Check' & Validated UPI for Fraud Prevention",
+   "url": "https://money.rediff.com/amp/news/market/sebi-launches-sebi-check-validated-upi-for-fraud-prevention/34625320251001",
+   "topics": [
+    "valid_handle",
+    "sebi_check"
+   ],
+   "text": "Sebi Launches 'SEBI Check' & Validated UPI for Fraud Prevention",
+   "date_of_source": "2025-10-01",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  },
+  {
+   "passage_id": "SCC-VALID-ADDITIONAL",
+   "tier": "T3",
+   "publisher": "SCC Online",
+   "title": "SEBI Introduces 'Verified UPI Handles' and 'SEBI Check' to safeguard Investors",
+   "url": "https://www.scconline.com/blog/post/2025/10/04/sebi-introduces-verified-upi-handles-and-sebi-check-to-safeguard-investors/",
+   "topics": [
+    "valid_handle"
+   ],
+   "text": "SEBI Introduces 'Verified UPI Handles' and 'SEBI Check' to safeguard Investors",
+   "date_of_source": "2025-10-04",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  },
+  {
+   "passage_id": "INVESTING-VALID-RULE",
+   "tier": "T3",
+   "publisher": "Investing.com India",
+   "title": "SEBI Launches Validated UPI Handles and 'SEBI Check' Tool to Combat Frauds",
+   "url": "https://in.investing.com/news/economy-news/sebi-launches-validated-upi-handles-and-sebi-check-tool-to-combat-frauds-4875044",
+   "topics": [
+    "valid_handle"
+   ],
+   "text": "SEBI Launches Validated UPI Handles and 'SEBI Check' Tool to Combat Frauds",
+   "date_of_source": "2025-06-13",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": "Article page date predates the 1 Oct 2025 rollout; treated as pre-announcement."
+  },
+  {
+   "passage_id": "SEBICHECK-LIVE",
+   "tier": "T1",
+   "publisher": "SEBI (siportal.sebi.gov.in)",
+   "title": "SEBI Check portal page",
+   "url": "https://siportal.sebi.gov.in/intermediary/sebi-check",
+   "topics": [
+    "sebi_check",
+    "valid_handle",
+    "language_support"
+   ],
+   "text": "SEBI Check portal page",
+   "date_of_source": "2026-10-02",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": "Fetched live; page text only. Interactive check not exercised."
+  },
+  {
+   "passage_id": "NIE-BADGE",
+   "tier": "T3",
+   "publisher": "The New Indian Express",
+   "title": "Sebi launches 'verified app label initiative' to fight fake investment apps",
+   "url": "https://www.newindianexpress.com/business/2026/Mar/25/sebi-launches-verified-app-label-initiative-to-fight-fake-investment-apps",
+   "topics": [
+    "verified_badge"
+   ],
+   "text": "Sebi launches 'verified app label initiative' to fight fake investment apps",
+   "date_of_source": "2026-03-25",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": "Status as of March 2026; later status not retrieved."
+  },
+  {
+   "passage_id": "TIMESNOW-BADGE",
+   "tier": "T3",
+   "publisher": "Times Now",
+   "title": "How to Spot Genuine Investment Apps? SEBI Comes With New Verified Label",
+   "url": "https://www.timesnownews.com/business-economy/personal-finance/how-to-spot-genuine-investment-app-sebi-comes-with-new-verified-label-article-153925033",
+   "topics": [
+    "verified_badge"
+   ],
+   "text": "How to Spot Genuine Investment Apps? SEBI Comes With New Verified Label",
+   "date_of_source": "2026-03-26",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": "Verbatim incl. source typo 'te'."
+  },
+  {
+   "passage_id": "SEBI-HOME-LINKS",
+   "tier": "T1",
+   "publisher": "SEBI (sebi.gov.in home page)",
+   "title": "SEBI home page announcements",
+   "url": "https://www.sebi.gov.in/",
+   "topics": [
+    "official_domains"
+   ],
+   "text": "SEBI home page announcements",
+   "date_of_source": "2026-10-02",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": "Shows that some SEBI-linked services live outside sebi.gov.in."
+  },
+  {
+   "passage_id": "RTI-PRESERVE",
+   "tier": "T3",
+   "publisher": "righttoinformation.wiki",
+   "title": "Report a Scam Call or Message in India: Guide 2026",
+   "url": "https://righttoinformation.wiki/report-scam-call-number-2026",
+   "topics": [
+    "preserve_evidence",
+    "active_loss",
+    "report_1930"
+   ],
+   "text": "Report a Scam Call or Message in India: Guide 2026",
+   "date_of_source": "2026-08-29",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  },
+  {
+   "passage_id": "LEGALBABU-FIRSTHOUR",
+   "tier": "T3",
+   "publisher": "LegalBabu",
+   "title": "How to Recover Money Lost in a Scam (India Guide)",
+   "url": "https://www.legalbabu.com/learn/recover-money-lost-in-a-scam/",
+   "topics": [
+    "active_loss",
+    "report_1930",
+    "contact_bank",
+    "preserve_evidence"
+   ],
+   "text": "How to Recover Money Lost in a Scam (India Guide)",
+   "date_of_source": "2026-09-14",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": "Also states no single route guarantees a full refund."
+  },
+  {
+   "passage_id": "LEGALBABU-NOGUARANTEE",
+   "tier": "T3",
+   "publisher": "LegalBabu",
+   "title": "How to Recover Money Lost in a Scam (India Guide)",
+   "url": "https://www.legalbabu.com/learn/recover-money-lost-in-a-scam/",
+   "topics": [
+    "recovery_limits"
+   ],
+   "text": "How to Recover Money Lost in a Scam (India Guide)",
+   "date_of_source": "2026-09-14",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  },
+  {
+   "passage_id": "ETGOV-DOT-CALLS",
+   "tier": "T3",
+   "publisher": "ET Government",
+   "title": "Report fraud calls on Chakshu of Sanchar Saathi portal, DoT advises mobile users",
+   "url": "https://government.economictimes.indiatimes.com/news/governance/report-fraud-calls-on-chakshu-of-sanchar-saathi-portal-dot-advises-mobile-users/108868832",
+   "topics": [
+    "authority_threat"
+   ],
+   "text": "Report fraud calls on Chakshu of Sanchar Saathi portal, DoT advises mobile users",
+   "date_of_source": "2024-03-29",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": "Refers to calls threatening mobile disconnection in DoT's name; 2024."
+  },
+  {
+   "passage_id": "MOF-SEBI-REG-WARN",
+   "tier": "T3",
+   "publisher": "Business Standard",
+   "title": "Is your financial advisor legit? Here's how to check Sebi registration",
+   "url": "https://www.business-standard.com/finance/personal-finance/is-your-financial-advisor-legit-here-s-how-to-check-sebi-registration-125102700452_1.html",
+   "topics": [
+    "sebi_registration",
+    "verify_registration",
+    "guaranteed_returns"
+   ],
+   "text": "Is your financial advisor legit? Here's how to check Sebi registration",
+   "date_of_source": "2025-10-27",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  },
+  {
+   "passage_id": "SEBI-PR14-2026-d",
+   "tier": "T2",
+   "publisher": "SEBI (via taxguru.in reproduction)",
+   "title": "SEBI PR No. 14/2026",
+   "url": "https://taxguru.in/sebi/sebi-warns-investors-account-handling-scams-promising-risk-free-profits.html",
+   "topics": [
+    "account_handling"
+   ],
+   "text": "SEBI PR No. 14/2026",
+   "date_of_source": "2026-02-26",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  },
+  {
+   "passage_id": "TEAMLEASE-PR27-c",
+   "tier": "T3",
+   "publisher": "TeamLease RegTech",
+   "title": "SEBI issued a Caution to Investors on Stock Market Scams through Social Media Platforms",
+   "url": "https://teamleaseregtech.com/updates/article/42857/sebi-issued-a-caution-to-investors-on-stock-market-scams-through-socia/",
+   "topics": [
+    "endorsement",
+    "impersonation"
+   ],
+   "text": "SEBI issued a Caution to Investors on Stock Market Scams through Social Media Platforms",
+   "date_of_source": "2025-05-21",
+   "retrieved_at": "2026-10-02T16:00:00Z",
+   "note": ""
+  }
+ ],
+ "release_note": "In this release candidate the third-party excerpt text of every passage was removed: the 'text' field of each passage now repeats its title, so the corpus holds only publisher, title, URL, tier, topics and dates for each source. This is a technical measure to avoid shipping third-party text; it does not by itself settle any copyright, licence or permission question, because titles and URLs are also third-party material. Open the URL to read the source."
+}
