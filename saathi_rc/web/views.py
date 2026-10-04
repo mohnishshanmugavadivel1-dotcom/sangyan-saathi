@@ -1,6 +1,6 @@
 """HTML rendering. Pure functions of the backend result dict: nothing is decided here. Every safety-relevant string comes from the backend result; the only
 strings defined here are interface labels (English + Hindi, Hindi unreviewed). No external assets (works offline / low bandwidth). No green anywhere (green reads as 'safe')."""
-import hashlib, html, json
+import hashlib, html, json, re
 from .. import VERSION
 from ..contract import SITUATION_OPTIONS, SITUATION_QUESTION, ACTIONS, LANGS, INCIDENT_UI_HEAD
 
@@ -45,31 +45,37 @@ CSP = "default-src 'none'; style-src 'sha256-%s'; script-src 'sha256-%s'; connec
 UI = {
     "en": {"title": "Sangyan Saathi - check a suspicious message", "h1": "Suspicious message? Check it before you act", "skip": "Skip to main content",
            "banner": "Research prototype. It is not a fraud check. It cannot tell you that a message is genuine or safe, and it never gives a clean result.",
-           "step1": "1. What has already happened?", "step2": "2. Paste the message (optional if you chose the first options below)",
+           "step1": "1. What has already happened?", "step2": "2. Paste the message (optional if you chose an option saying you already paid, shared details or gave access)",
            "privacy": "Do not paste OTPs, PINs, passwords, card or Aadhaar numbers. If you do, they are masked and nothing is stored or logged by this tool.",
-           "ph": "Type or paste the text of the message here", "go": "Check the message", "lang": "हिन्दी", "langcode": "hi", "urgent_h": "Do this first", "found_h": "What this tool found in the message",
+           "ph": "Type or paste the suspicious message here. Do not include OTPs, passwords, PINs or account details.", "go": "Check the message", "lang": "हिन्दी", "langcode": "hi", "urgent_h": "Do this first", "found_h": "What this tool found in the message",
            "facts_h": "Checked against sources", "facts_sub": "What the collected sources say about claims in the message. This does not verify the message itself.",
            "ind_h": "Warning signs detected", "ind_sub": "Pattern matches in the text. They are warning signs, not proof of fraud.", "unc_h": "Could not be confirmed",
            "unc_sub": "Claims where the sources are not enough to say anything.", "steps_h": "What you can do next", "unav_h": "Not checked or not available", "lim_h": "Limits of this tool",
-           "reg_h": "Optional: check a SEBI registration number", "reg_p": "This looks the number up on SEBI's own list. A match does not make the message or the offer trustworthy.", "reg_num": "Registration number (INA or INH + 9 digits)",
-           "reg_name": "Name the sender used (optional)", "reg_go": "Look up on SEBI's list", "reg_wait": "Contacting SEBI's website...", "reg_fail": "Could not reach this tool's server. Nothing was checked.",
+           "reg_h": "Optional demo: registration-number checker (sample data, not SEBI)", "reg_p": "DEMO ONLY: this compares the number with a small built-in list of made-up (synthetic) sample entries, not a real register. It does not contact SEBI, and it queries no SEBI or NSDL register. It cannot verify any real registration: a real registration number will show \"not found\" here, which says nothing about that number. To check a real number yourself, use the Intermediaries page on sebi.gov.in. A match here says nothing about any real message or offer.", "reg_num": "Registration number (INA or INH + 9 digits)",
+           "reg_name": "Name the sender used (optional)", "reg_go": "Run demo check on sample data (not SEBI)", "reg_wait": "Checking the built-in sample list (SEBI is not contacted)...", "reg_fail": "Could not reach this tool's server. Nothing was checked.",
            "back": "Start again", "ifyes": "If the answer to any question is yes, start here", "sources": "Sources", "snap": "Source snapshot collected on %s (%s days ago)", "unknown": "unknown", "emerg": "Money already lost? Call 1930 and your bank now.",
-           "speak": "Read this page aloud (uses your device's voice; availability varies)", "none_found": "Nothing in this group.", "tier": {"T1": "official source", "T2": "reproduction of an official statement", "T3": "news or secondary report"},
-           "label": {"urgent": "Urgent", "concern": "Warning", "info": "Info", "unavail": "Not checked"}, "posture": {"HIGH_CONCERN": "High concern", "SOME_CONCERN": "Some concern", "CANNOT_ASSESS": "Cannot assess", "ABSTAIN": "No assessment", "ESCALATE": "Act now", "ASK_FOLLOWUP": "One question first", "NEEDS_SITUATION": "Choose first"},
+           "speak": "Read this page aloud (uses your device's voice; availability varies)", "none_found": "Nothing in this group.","tier": {"T1": "official source", "T2": "reproduction of an official statement", "T3": "news or secondary report"},
+           "label": {"urgent": "Urgent", "concern": "Warning", "info": "Info", "unavail": "Not checked"}, "posture": {"HIGH_CONCERN": "High concern", "SOME_CONCERN": "Some concern", "CANNOT_ASSESS": "Not enough information", "ABSTAIN": "No assessment", "ESCALATE": "Act now", "ASK_FOLLOWUP": "One question first", "NEEDS_SITUATION": "Choose first"},
            "pause": "Pause", "again_h": "Choose what applies, then check again", "err_h": "Something went wrong. Nothing was checked.", "toolong": "The text is too long.", "regsrc": "Source", "regdate": "Register date", "retrieved": "Retrieved", "record": "Register record"},
     "hi": {"title": "संज्ञान साथी - संदिग्ध संदेश जाँचें", "h1": "संदिग्ध संदेश? कुछ करने से पहले जाँचें", "skip": "मुख्य सामग्री पर जाएँ",
            "banner": "शोध प्रोटोटाइप। यह धोखाधड़ी की जाँच नहीं है। यह नहीं बता सकता कि कोई संदेश असली या सुरक्षित है, और कभी 'सब ठीक' नतीजा नहीं देता।",
-           "step1": "1. अब तक क्या हुआ है?", "step2": "2. संदेश चिपकाएँ (नीचे पहले विकल्प चुनने पर वैकल्पिक)", "privacy": "OTP, पिन, पासवर्ड, कार्ड या आधार संख्या न चिपकाएँ। चिपकाने पर वे छिपा दी जाती हैं और यह टूल कुछ भी सहेजता या लॉग नहीं करता।",
-           "ph": "संदेश का पाठ यहाँ टाइप या चिपकाएँ", "go": "संदेश जाँचें", "lang": "English", "langcode": "en", "urgent_h": "पहले यह करें", "found_h": "इस टूल को संदेश में क्या मिला",
+           "step1": "1. अब तक क्या हुआ है?", "step2": "2. संदेश चिपकाएँ (वैकल्पिक, यदि आपने पैसे भेजने, जानकारी साझा करने या एक्सेस देने वाला विकल्प चुना है)", "privacy": "OTP, पिन, पासवर्ड, कार्ड या आधार संख्या न चिपकाएँ। चिपकाने पर वे छिपा दी जाती हैं और यह टूल कुछ भी सहेजता या लॉग नहीं करता।",
+           "ph": "संदिग्ध संदेश यहाँ टाइप या चिपकाएँ। OTP, पासवर्ड, पिन या खाते का विवरण शामिल न करें।", "go": "संदेश जाँचें", "lang": "English", "langcode": "en", "urgent_h": "पहले यह करें", "found_h": "इस टूल को संदेश में क्या मिला",
            "facts_h": "स्रोतों से मिलान", "facts_sub": "संदेश के दावों के बारे में जुटाए गए स्रोत क्या कहते हैं। इससे संदेश की पुष्टि नहीं होती।", "ind_h": "पहचाने गए चेतावनी संकेत", "ind_sub": "पाठ में पैटर्न-मिलान। ये चेतावनी हैं, धोखाधड़ी का प्रमाण नहीं।",
            "unc_h": "पुष्टि नहीं हो सकी", "unc_sub": "ऐसे दावे जिनके बारे में स्रोत कुछ कहने के लिए काफ़ी नहीं हैं।", "steps_h": "आगे आप क्या कर सकते हैं", "unav_h": "जाँचा नहीं गया या उपलब्ध नहीं", "lim_h": "इस टूल की सीमाएँ",
-           "reg_h": "वैकल्पिक: सेबी पंजीकरण संख्या जाँचें", "reg_p": "यह संख्या सेबी की अपनी सूची में खोजता है। मिलान से संदेश या ऑफ़र भरोसेमंद नहीं हो जाता।", "reg_num": "पंजीकरण संख्या (INA या INH + 9 अंक)",
-           "reg_name": "भेजने वाले का बताया नाम (वैकल्पिक)", "reg_go": "सेबी की सूची में खोजें", "reg_wait": "सेबी की वेबसाइट से संपर्क हो रहा है...", "reg_fail": "इस टूल के सर्वर तक नहीं पहुँचा जा सका। कुछ भी नहीं जाँचा गया।",
+           "reg_h": "वैकल्पिक डेमो: पंजीकरण-संख्या जाँच (नमूना डेटा, सेबी नहीं)", "reg_p": "केवल डेमो: यह संख्या को काल्पनिक नमूना प्रविष्टियों की एक छोटी अंतर्निहित सूची से मिलाता है। यह सेबी से संपर्क नहीं करता, और यह नहीं बता सकता कि कोई असली पंजीकरण संख्या सेबी की सूची में है या नहीं। असली संख्या खुद जाँचने के लिए sebi.gov.in का Intermediaries पेज देखें। यहाँ मिलान का किसी असली संदेश या ऑफ़र के बारे में कोई मतलब नहीं है।", "reg_num": "पंजीकरण संख्या (INA या INH + 9 अंक)",
+           "reg_name": "भेजने वाले का बताया नाम (वैकल्पिक)", "reg_go": "नमूना डेटा पर डेमो जाँच चलाएँ (सेबी नहीं)", "reg_wait": "अंतर्निहित नमूना सूची में जाँच हो रही है (सेबी से संपर्क नहीं हो रहा)...", "reg_fail": "इस टूल के सर्वर तक नहीं पहुँचा जा सका। कुछ भी नहीं जाँचा गया।",
            "back": "फिर शुरू करें", "ifyes": "अगर किसी भी सवाल का जवाब हाँ है, तो यहाँ से शुरू करें", "sources": "स्रोत", "snap": "स्रोत %s को जुटाए गए (%s दिन पहले)", "unknown": "अज्ञात", "emerg": "पैसे जा चुके हैं? अभी 1930 और अपने बैंक को कॉल करें।",
            "speak": "यह पृष्ठ पढ़कर सुनाएँ (आपके डिवाइस की आवाज़; उपलब्धता अलग-अलग)", "none_found": "इस समूह में कुछ नहीं।", "tier": {"T1": "आधिकारिक स्रोत", "T2": "आधिकारिक बयान की प्रति", "T3": "समाचार या द्वितीयक रिपोर्ट"},
            "label": {"urgent": "ज़रूरी", "concern": "चेतावनी", "info": "जानकारी", "unavail": "जाँचा नहीं"}, "posture": {"HIGH_CONCERN": "अधिक चिंता", "SOME_CONCERN": "कुछ चिंता", "CANNOT_ASSESS": "आकलन नहीं हो सकता", "ABSTAIN": "कोई आकलन नहीं", "ESCALATE": "अभी कदम उठाएँ", "ASK_FOLLOWUP": "पहले एक सवाल", "NEEDS_SITUATION": "पहले चुनें"},
            "pause": "रुकिए", "again_h": "जो लागू हो चुनें, फिर दोबारा जाँचें", "err_h": "कुछ गलत हुआ। कुछ भी नहीं जाँचा गया।", "toolong": "पाठ बहुत लंबा है।", "regsrc": "स्रोत", "regdate": "रजिस्टर की तारीख", "retrieved": "प्राप्त", "record": "रजिस्टर रिकॉर्ड"},
 }
+# English-only plain-language lead for the CANNOT_ASSESS page. Kept out of UI[] on purpose: UI must have identical keys in en and hi, and no Hindi text was written or added here.
+CANNOT_ASSESS_EN = {"lead": "There is not enough information to assess this message reliably.",
+                    "note": "Please verify it through trusted channels: contact your bank, broker or the sender using a phone number or app you already have, not the link or number in the message. An inconclusive result does not mean the message is safe."}
+
+SUBJECTLESS_RISK_EN = "The risk found in your text (a pattern match, not certain):"
+
 POSTURE_BOX = {"ESCALATE": "urgent", "ASK_FOLLOWUP": "concern", "HIGH_CONCERN": "concern", "SOME_CONCERN": "concern", "CANNOT_ASSESS": "info", "ABSTAIN": "unavail", "NEEDS_SITUATION": "info"}
 
 
@@ -94,10 +100,25 @@ def _src_link(pid):
     return "<a href='%s' rel='noopener noreferrer'>%s</a>" % (e(x["url"]), e(x["publisher"]))
 
 
+# Priority labels for the urgent block (display only; step texts, sources and order come from the backend unchanged).
+PRIO = {"A_CONTACT_BANK": {"en": "Step 1: Your bank", "hi": "चरण 1: आपका बैंक"}, "A_CALL_1930": {"en": "Step 2: 1930 or cybercrime.gov.in", "hi": "चरण 2: 1930 या cybercrime.gov.in"},
+        "A_HAVE_DETAILS": {"en": "Step 3: Evidence", "hi": "चरण 3: सबूत"}, "A_PRESERVE_EVIDENCE": {"en": "Step 3: Evidence", "hi": "चरण 3: सबूत"},
+        "A_NO_PAY_NO_SHARE": {"en": "Also", "hi": "साथ ही"}, "A_NO_REMOTE": {"en": "Also", "hi": "साथ ही"}}
+
+
+def _ifyes_order(steps):
+    """Display only: in the "if the answer is yes" block, show the conditional bank -> 1930 -> evidence steps first (same order as the urgent block), then the general do-not-pay step. Texts, sources and the backend order are unchanged."""
+    return [s for s in steps if s.get("conditional")] + [s for s in steps if not s.get("conditional")]
+
+
 def _steps_html(steps, lang, cls=None):
-    out = "<ul>"
+    prio = cls == "urgent"   # urgent block only: add priority labels
+    out = "<ul>"; last = None
     for s in steps:
-        out += "<li>%s <span class='muted'>(%s: %s)</span></li>" % (e(s["text"]), e(UI[L(lang)]["sources"]), "; ".join(_src_link(i) for i in s["sources"]))
+        lab = PRIO.get(s.get("action_id"), {}).get(L(lang)) if prio else None
+        tag = "<strong>%s</strong> &mdash; " % e(lab) if lab and lab != last else ""
+        if lab: last = lab
+        out += "<li>%s%s <span class='muted'>(%s: %s)</span></li>" % (tag, e(s["text"]), e(UI[L(lang)]["sources"]), "; ".join(_src_link(i) for i in s["sources"]))
     return out + "</ul>"
 
 
@@ -129,6 +150,23 @@ def _claim_html(c, lang):
     return "<li><strong>%s</strong> <span class='muted'>(%s)</span><br>%s%s</li>" % (e(c["state_label"]), e(c["claim_type"].replace("_", " ").lower()), e(c["explanation"]), _src_html(c.get("evidence", []), lang))
 
 
+_DEMO_EN = [(r"(?:the )?SEBI lists searched", "the demo sample list"), (r"SEBI's list of (?=cancelled|ended)", "the demo sample list of "),
+            (r"SEBI's (?:current )?(?:(?:Investment Advisers?|Research Analysts?|Investment Adviser and Research Analyst) )?(?:register|lists?)\b", "the demo sample list"),
+            (r"\bthe SEBI lists?\b", "the demo sample list"), (r"\bSEBI lists?\b", "the demo sample list")]
+_DEMO_HI = [(r"सेबी की (?=रद्द|समाप्त)", "डेमो नमूना-सूची की "), (r"सेबी (?:के|का) रजिस्टर(?: में)?", "डेमो नमूना-सूची में"),
+            (r"सेबी (?:की|के|का) [^।]*?सूच(?:ी|ियों)", "डेमो नमूना-सूची"), (r"सेबी सूचि", "डेमो नमूना-सूचि")]
+
+
+DEMO_SOURCE = {"en": "built-in demo fixture of invented sample entries (not SEBI)", "hi": "अंतर्निहित डेमो फ़िक्स्चर, काल्पनिक नमूना प्रविष्टियाँ (सेबी नहीं)"}
+
+
+def _demo_wording(s, lang):
+    """Fixture mode only: the backend's register wording says 'SEBI's list'. In demo mode the page must say 'demo sample list' instead, so a card can never be read as a live SEBI result. Display-level only; the backend result is unchanged."""
+    for pat, to in (_DEMO_HI if L(lang) == "hi" else _DEMO_EN):
+        s = re.sub(pat, to, s or "")
+    return s
+
+
 def registry_card_html(reg, lang, demo=False):
     """Card + reminder. The reminder is NOT muted: same size and weight as the result, directly under the headline."""
     u = UI[L(lang)]; c = reg["card"]
@@ -137,11 +175,16 @@ def registry_card_html(reg, lang, demo=False):
     cands = "<ul>" + "".join("<li><span class='q'>%s</span> %s</li>" % (e(x["reg_no"]), e(x["name"])) for x in c.get("candidates", [])) + "</ul>" if c.get("candidates") else ""
     prov = ", ".join(sorted({p.get("retrieved_at_utc") or "" for p in c.get("provenance", [])}))
     cls = "info" if c["status"] in ("CONFIRMED_IN_REGISTER", "LISTED_NAME_NOT_COMPARED") else "concern" if c["status"] in ("NAME_DIFFERS", "INACTIVE_IN_REGISTER", "NOT_FOUND", "AMBIGUOUS") else "unavail"
-    demo_box = "<div class='box urgent' role='note'><strong>DEMO DATA: this card comes from a built-in fixture, not from SEBI's list.</strong> Nothing below was checked against SEBI. Only invented entries can match here; a real registration number will show \"not found\", which says nothing about that number.</div>" if demo else ""
+    demo_box = ("<div class='box urgent' role='note'><strong>DEMO DATA: made-up sample entries, not a real register. This card comes from a built-in fixture, not from SEBI's list.</strong> Nothing below was checked against SEBI. No live SEBI or NSDL register was queried, and nothing below verifies a real registration. Only invented entries can match here; a real registration number will show \"not found\", which says nothing about that number.</div>" if L(lang) == "en" else
+                "<div class='box urgent' role='note'><strong>DEMO DATA (डेमो डेटा): यह कार्ड अंतर्निहित नमूना फ़िक्स्चर से आया है, सेबी की सूची से नहीं।</strong> नीचे कुछ भी सेबी से नहीं जाँचा गया। यहाँ केवल काल्पनिक प्रविष्टियाँ ही मिल सकती हैं; कोई असली पंजीकरण संख्या \"नहीं मिली\" दिखाएगी, जिसका उस संख्या के बारे में कोई मतलब नहीं है।</div>") if demo else ""
+    if demo:
+        c = dict(c, headline=("DEMO RESULT (sample data, not SEBI): " if L(lang) == "en" else "डेमो परिणाम (नमूना डेटा, सेबी नहीं): ") + _demo_wording(c["headline"], lang),
+                 means=_demo_wording(c["means"], lang), does_not_mean=_demo_wording(c["does_not_mean"], lang))
+        reg = dict(reg, reminder=_demo_wording(reg["reminder"], lang))
     return (demo_box + "<div class='box %s' id='registry-card'><h3>%s</h3><p><strong>%s</strong></p><p>%s</p>%s%s<div class='box concern' role='note'><p><strong>%s</strong></p><p>%s</p></div>"
             "<p class='muted'>%s: %s &middot; %s: %s &middot; %s: %s</p></div>" % (
                 cls, e(u["reg_h"]), e(c["headline"]), e(c["means"]), rec, cands, e(c["does_not_mean"]), e(reg["reminder"]),
-                e(u["regsrc"]), e((c.get("source") or {}).get("name", "")), e(u["regdate"]), e(str(c.get("as_of"))), e(u["retrieved"]), e(prov)))
+                e(u["regsrc"]), e((DEMO_SOURCE[L(lang)] if demo else (c.get("source") or {}).get("name", ""))), e(u["regdate"]), e(str(c.get("as_of"))), e(u["retrieved"]), e(prov)))
 
 
 def registry_form_html(res, lang):
@@ -160,27 +203,36 @@ def incident_html(res, lang):
     if not inc or inc.get("state") == "NO_INCIDENT": return ""
     quotes = "".join("<li><span class='muted q'>&ldquo;%s&rdquo;</span></li>" % e(x["snippet"]) for x in inc.get("events", []) if x.get("snippet"))
     also = "".join("<li>%s</li>" % e(x) for x in inc.get("also", []))
+    risk_html = ""
+    # P3 (demo sprint 3): the subject-less-payment label says "a risk (listed below)" but the view never listed the backend's risk_context. Shown for that route only, in English
+    # only (the backend reason strings are English; no Hindi text was written, so the Hindi page is unchanged).
+    if (res.get("provenance") or {}).get("incident_route") == "escalated_subjectless_payment_with_context" and inc.get("risk_context") and lang == "en":
+        risk_html = "<p><strong>%s</strong></p><ul>%s</ul>" % (e(SUBJECTLESS_RISK_EN), "".join("<li>%s</li>" % e(x) for x in inc["risk_context"]))
     return ("<section class='box concern' id='incident' data-state='%s' aria-labelledby='inch'><h2 id='inch'>%s</h2><p><strong>%s</strong></p>%s%s<p class='muted'>%s</p>%s</section>" % (
-        e(inc["state"]), e(INCIDENT_UI_HEAD[lang]), e(inc["label"]), ("<ul>%s</ul>" % quotes) if quotes else "", ("<ul>%s</ul>" % also) if also else "", e(inc.get("note", "")),
+        e(inc["state"]), e(INCIDENT_UI_HEAD[lang]), e(inc["label"]), ("<ul>%s</ul>" % quotes) if quotes else "", (("<ul>%s</ul>" % also) if also else "") + risk_html, e(inc.get("note", "")),
         ("<p><strong>%s</strong></p>" % e(inc["conflict_note"])) if inc.get("conflict_note") else ""))
 
 
 def correction_form(res, lang, text, u):
     opts = "".join("<label class='opt'><input type='radio' name='situation' value='%s' required> <span>%s</span></label>" % (o["code"], e(o["text"])) for o in res.get("options", []))
     return ("<form method='post' action='/check'><input type='hidden' name='output_language' value='%s'><fieldset class='plain'><legend><h2>%s</h2></legend>%s</fieldset>"
-            "<h2><label for='t3'>%s</label></h2><textarea id='t3' name='text' rows='5' maxlength='20000'>%s</textarea><p><button type='submit'>%s</button></p></form>" % (lang, e(u["again_h"]), opts, e(u["step2"]), e(text), e(u["go"])))
+            "<h2><label for='t3'>%s</label></h2><textarea id='t3' name='text' rows='5' maxlength='20000' placeholder='%s'>%s</textarea><p><button type='submit'>%s</button></p></form>" % (lang, e(u["again_h"]), opts, e(u["step2"]), e(u["ph"]), e(text), e(u["go"])))
 
 
 def render_result(res, extra_registry=None, text=""):
     lang = L(res.get("language")); u = UI[lang]; p = res["posture"]
     box = POSTURE_BOX.get(p, "info")
     out = ["<p><a class='btn secondary nop' href='/?lang=%s'>&larr; %s</a> <button type='button' id='speak' class='secondary nop' hidden>%s</button></p>" % (lang, e(u["back"]), e(u["speak"]))]
-    out.append("<section class='box %s' aria-labelledby='hd'><h1 id='hd'><span class='tag'>%s</span></h1><p><strong>%s</strong></p>%s</section>" % (
-        box, e(u["posture"].get(p, p)), e(res["headline"]), ("<p>%s</p>" % e(res["summary"])) if res.get("summary") and p not in ("NEEDS_SITUATION",) else ""))
+    if p == "CANNOT_ASSESS" and lang == "en":   # English only: plain-language lead (CANNOT_ASSESS_EN); the backend headline and summary stay on the page unchanged. No Hindi text was added.
+        out.append("<section class='box %s' aria-labelledby='hd'><h1 id='hd'><span class='tag'>%s</span></h1><p><strong>%s</strong></p><p>%s</p><p>%s</p>%s</section>" % (
+            box, e(u["posture"].get(p, p)), e(CANNOT_ASSESS_EN["lead"]), e(CANNOT_ASSESS_EN["note"]), e(res["headline"]), ("<p>%s</p>" % e(res["summary"])) if res.get("summary") else ""))
+    else:
+        out.append("<section class='box %s' aria-labelledby='hd'><h1 id='hd'><span class='tag'>%s</span></h1><p><strong>%s</strong></p>%s</section>" % (
+            box, e(u["posture"].get(p, p)), e(res["headline"]), ("<p>%s</p>" % e(res["summary"])) if res.get("summary") and p not in ("NEEDS_SITUATION",) else ""))
     if res.get("pause_notice"):
         out.append("<p><strong>%s</strong></p>" % e(res["pause_notice"]))
     if res.get("urgent_steps"):
-        out.append("<section class='box urgent' role='alert' aria-labelledby='ug'><h2 id='ug'><span class='tag'>%s</span> %s</h2>%s</section>" % (e(u["label"]["urgent"]), e(u["urgent_h"]), _steps_html(res["urgent_steps"], lang)))
+        out.append("<section class='box urgent' role='alert' aria-labelledby='ug'><h2 id='ug'><span class='tag'>%s</span> %s</h2>%s</section>" % (e(u["label"]["urgent"]), e(u["urgent_h"]), _steps_html(res["urgent_steps"], lang, "urgent")))
     out.append(incident_html(res, lang))
     if (res.get("incident") or {}).get("applied") == "escalated_from_text":
         out.append(correction_form(res, lang, text, u))
@@ -188,11 +240,11 @@ def render_result(res, extra_registry=None, text=""):
         if res.get("questions"):
             out.append("<section class='box concern'><ol>%s</ol></section>" % "".join("<li>%s</li>" % e(q) for q in res["questions"]))
         if res.get("steps"):
-            out.append("<section class='box urgent' role='alert' aria-labelledby='ifyes'><h2 id='ifyes'><span class='tag'>%s</span> %s</h2>%s</section>" % (e(u["label"]["urgent"]), e(u["ifyes"]), _steps_html(res["steps"], lang)))
+            out.append("<section class='box urgent' role='alert' aria-labelledby='ifyes'><h2 id='ifyes'><span class='tag'>%s</span> %s</h2>%s</section>" % (e(u["label"]["urgent"]), e(u["ifyes"]), _steps_html(_ifyes_order(res["steps"]), lang, "urgent")))
         opts = "".join("<label class='opt'><input type='radio' name='situation' value='%s' required> <span>%s</span></label>" % (o["code"], e(o["text"])) for o in res.get("options", []))
         out.append("<form method='post' action='/check'><input type='hidden' name='output_language' value='%s'><fieldset class='plain'><legend><h2>%s</h2></legend>%s</fieldset>"
-                   "<h2><label for='t2'>%s</label></h2><p class='muted'>%s</p><textarea id='t2' name='text' rows='5' maxlength='20000'>%s</textarea><p><button type='submit'>%s</button></p></form>" % (
-                       lang, e(u["again_h"]), opts, e(u["step2"]), e(u["privacy"]), e(text), e(u["go"])))
+                   "<h2><label for='t2'>%s</label></h2><p class='muted'>%s</p><textarea id='t2' name='text' rows='5' maxlength='20000' placeholder='%s'>%s</textarea><p><button type='submit'>%s</button></p></form>" % (
+                       lang, e(u["again_h"]), opts, e(u["step2"]), e(u["privacy"]), e(u["ph"]), e(text), e(u["go"])))
     else:
         facts = [c for c in res["claims"] if c["state"] in ("SUPPORTED", "CONTRADICTED")]
         unc = [c for c in res["claims"] if c["state"] not in ("SUPPORTED", "CONTRADICTED")]
@@ -223,7 +275,7 @@ def render_registry_page(res, reg, lang, demo=False):
     lang = L(lang); u = UI[lang]
     body = ["<p><a class='btn secondary nop' href='/?lang=%s'>&larr; %s</a></p><h1>%s</h1>" % (lang, e(u["back"]), e(u["reg_h"]))]
     if res.get("urgent_steps"):
-        body.append("<section class='box urgent' role='alert'><h2><span class='tag'>%s</span> %s</h2>%s</section>" % (e(u["label"]["urgent"]), e(u["urgent_h"]), _steps_html(res["urgent_steps"], lang)))
+        body.append("<section class='box urgent' role='alert'><h2><span class='tag'>%s</span> %s</h2>%s</section>" % (e(u["label"]["urgent"]), e(u["urgent_h"]), _steps_html(res["urgent_steps"], lang, "urgent")))
     else:
         body.append(emergency_strip(lang))
     body.append(registry_card_html(reg, lang, demo))

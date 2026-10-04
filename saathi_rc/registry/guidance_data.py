@@ -12,30 +12,29 @@ ACTIONS = {
  },
  "A_CONTACT_BANK": {
   "sources": [
-   "LEGALBABU-FIRSTHOUR"
+   "RBI-LIMITED-LIABILITY"
   ],
   "en": "Contact your bank right away through its official number or app to report the transaction and ask about blocking or disputing it.",
   "hi": "अपने बैंक के आधिकारिक नंबर या ऐप से तुरंत संपर्क करें, लेन-देन की सूचना दें और उसे रोकने या विवाद दर्ज करने के बारे में पूछें।"
  },
  "A_PRESERVE_EVIDENCE": {
   "sources": [
-   "RTI-PRESERVE",
-   "LEGALBABU-FIRSTHOUR"
+   "NCRP-FIN-MANUAL"
   ],
-  "en": "Keep screenshots, transaction IDs, phone numbers and chat history; do not delete them. You will need them for the complaint.",
-  "hi": "स्क्रीनशॉट, लेन-देन आईडी, फोन नंबर और चैट इतिहास सुरक्षित रखें, उन्हें डिलीट न करें। शिकायत के लिए इनकी जरूरत होगी।"
+  "en": "Keep screenshots, transaction IDs, phone numbers and chat history; do not delete them. You will need them for the complaint. (The official guide names the transaction ID, the date and a screenshot of the transaction; the other items are general good practice.)",
+  "hi": "स्क्रीनशॉट, लेन-देन आईडी, फोन नंबर और चैट इतिहास सुरक्षित रखें, उन्हें डिलीट न करें। शिकायत के लिए इनकी जरूरत होगी। (आधिकारिक मार्गदर्शिका में लेन-देन आईडी, तारीख और लेन-देन का स्क्रीनशॉट बताया गया है; बाकी चीज़ें सामान्य अच्छी आदत हैं।)"
  },
  "A_NO_PAY_NO_SHARE": {
   "sources": [
    "SEBI-PR14-2026-b",
-   "TOI-RBI-BEAWARE"
+   "RBI-BEAWARE-VISHING"
   ],
   "en": "Do not pay money, and do not share OTPs, PINs, passwords or trading-account details, because of this message.",
   "hi": "इस संदेश के कारण पैसे न भेजें, और OTP, पिन, पासवर्ड या ट्रेडिंग-खाते की जानकारी किसी को न दें।"
  },
  "A_OFFICIAL_CALLBACK": {
   "sources": [
-   "TIMESNOW-RBI-OTP",
+   "RBI-BEAWARE-CONTACT",
    "SANCHAR-FAQ-EXAMPLES"
   ],
   "en": "If you are unsure, contact your bank or broker through the number or app you already have, not through the link or number in the message.",
@@ -50,3 +49,8 @@ ACTIONS = {
   "hi": "सेबी की 'SEBI Check' सेवा यह जांचने के लिए है कि कोई भुगतान आईडी पंजीकृत मध्यस्थ की है या नहीं। किसी भी UPI आईडी में भुगतान से पहले इसका उपयोग करें।"
  }
 }
+
+# Conditional block: only the first step carries the full condition; the others start with COND_FOLLOW, and A_CALL_1930 drops its own "If money has already gone ..." clause.
+COND_FOLLOW = {"en": "In that case, also ", "hi": "ऐसी स्थिति में यह भी करें: "}
+COND_TEXT = {"A_CALL_1930": {"en": "call 1930 (national cyber-fraud helpline) or report at cybercrime.gov.in as soon as possible.",
+                             "hi": "तुरंत 1930 (राष्ट्रीय साइबर-धोखाधड़ी हेल्पलाइन) पर कॉल करें या cybercrime.gov.in पर रिपोर्ट करें।"}}

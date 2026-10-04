@@ -111,6 +111,50 @@ class TestFaithfulRendering(Base):
                     self.assertIn(e(m), page, "missing from UI (%s/%s/%s): %s" % (sit, lang, api["posture"], m[:60]))
                 self.assertIn(views.UI[lang]["banner"].replace("'", "&#x27;"), page)
 
+    def test_cannot_assess_page_plain_language_lead(self):
+        """Demo-readiness sprint: the English CANNOT_ASSESS page opens with a plain-language lead and keeps the backend headline and summary; Hindi is unchanged (no new Hindi text)."""
+        amb = "Hello sir, I am from a company. We can discuss investment opportunities. Reply for details."
+        lead, note = views.CANNOT_ASSESS_EN["lead"], views.CANNOT_ASSESS_EN["note"]
+        self.assertEqual(lead, "There is not enough information to assess this message reliably.")
+        self.assertIn("does not mean the message is safe", note); self.assertIn("trusted channels", note)
+        c, api = self.api("/api/check", {"situation": "NO_ACTION_YET", "text": amb, "output_language": "en"})
+        self.assertEqual(api["posture"], "CANNOT_ASSESS")                      # backend state unchanged
+        c2, page, _ = self.req("/check", {"situation": "NO_ACTION_YET", "text": amb, "output_language": "en"}); t = visible(page)
+        for must in (lead, note, api["headline"], api["summary"]): self.assertIn(must, t)
+        self.assertLess(t.index(lead), t.index(api["headline"]))
+        self.assertNotIn("Cannot assess", t)
+        c3, api_hi = self.api("/api/check", {"situation": "NO_ACTION_YET", "text": amb, "output_language": "hi"})
+        c4, page_hi, _ = self.req("/check", {"situation": "NO_ACTION_YET", "text": amb, "output_language": "hi"}); th = visible(page_hi)
+        self.assertEqual(api_hi["posture"], "CANNOT_ASSESS"); self.assertIn(api_hi["headline"], th)
+        self.assertNotIn(lead, th); self.assertNotIn(note, th)
+
+    def test_subjectless_payment_lists_the_risk_it_promises(self):
+        """Demo sprint 3 (P3): the English label says "a risk (listed below)", so the backend's risk_context must be listed; other incident views and Hindi are unchanged."""
+        t5 = "Paid 15,000 to the account he gave me; now he wants more."
+        c, api = self.api("/api/check", {"situation": "NO_ACTION_YET", "text": t5, "output_language": "en"})
+        self.assertEqual((api["posture"], api["incident"]["state"]), ("ESCALATE", "PAYMENT_UNCLEAR")); self.assertTrue(api["incident"]["risk_context"])
+        c2, page, _ = self.req("/check", {"situation": "NO_ACTION_YET", "text": t5, "output_language": "en"}); t = visible(page)
+        self.assertIn(views.SUBJECTLESS_RISK_EN, t)
+        for r in api["incident"]["risk_context"]: self.assertIn(r, t)
+        self.assertLess(t.index("(listed below)"), t.index(views.SUBJECTLESS_RISK_EN))
+        c3, page_hi, _ = self.req("/check", {"situation": "NO_ACTION_YET", "text": t5, "output_language": "hi"}); self.assertNotIn(views.SUBJECTLESS_RISK_EN, visible(page_hi))
+        for sit, txt in (("PAID_MONEY", "I sent 15,000 to the account he gave me. Now he wants more for taxes."), ("SHARED_CREDENTIALS", "I entered my card number and CVV on a page that opened from the SMS."), ("UNSURE", "")):
+            c4, pg, _ = self.req("/check", {"situation": sit, "text": txt, "output_language": "en"}); self.assertNotIn(views.SUBJECTLESS_RISK_EN, visible(pg), sit)
+
+    def test_conditional_urgent_block_stays_for_every_unconfirmed_payment(self):
+        """Demo sprint 3 (P1, documented decision): the engine gives the benign Zomato payment, a real advance-fee story and a look-alike OTP scam the SAME state and route, so the
+        conditional red block must stay on all of them. If this test ever fails because the block disappeared for the scam-like texts, genuine urgent guidance was lost."""
+        texts = ("I paid 1,200 to Zomato via UPI.", "I paid the registration amount, then they added a GST charge, then a compliance fee.",
+                 "I paid 1,200 to Zomato via UPI. They called saying it was a refund and asked for my OTP.")
+        routes = set()
+        for t_ in texts:
+            c, api = self.api("/api/check", {"situation": "NO_ACTION_YET", "text": t_, "output_language": "en"})
+            self.assertEqual(api["posture"], "ASK_FOLLOWUP"); routes.add((api["incident"]["state"], api["provenance"]["followup_reason"]))
+            self.assertEqual([x["action_id"] for x in api["steps"]], ["A_NO_PAY_NO_SHARE", "A_CONTACT_BANK", "A_CALL_1930", "A_PRESERVE_EVIDENCE"])
+            c2, page, _ = self.req("/check", {"situation": "NO_ACTION_YET", "text": t_, "output_language": "en"})
+            self.assertIn("id='ifyes'", page); self.assertIn("class='box urgent' role='alert'", page)
+        self.assertEqual(len(routes), 1)    # indistinguishable to the engine, which is why the block cannot be hidden for one of them without new detection logic
+
     def test_urgent_block_is_first_content_for_harm_situations(self):
         for sit in ("PAID_MONEY", "SHARED_CREDENTIALS", "ACCESS_GRANTED"):
             for text in ("", SCAM, "random text"):
@@ -183,9 +227,10 @@ class TestRegistryStep(Base):
             if "Even a match" in m.group(2) or "does not" in m.group(2).lower() and "shows" in m.group(2).lower(): self.assertIsNone(m.group(1), m.group(2)[:60])
 
     def test_states_render_and_demo_label(self):
-        for num, name, expect in (("INA000000201", "Gamma Wealth Advisers Private Limited", "listed on sebi's register"), ("INA000000999", "", "not found"), ("INH000000301", "", "cancelled"), ("bad", "", "")):
+        for num, name, expect in (("INA000000201", "Gamma Wealth Advisers Private Limited", "listed on the demo sample list"), ("INA000000999", "", "not found"), ("INH000000301", "", "cancelled"), ("bad", "", "")):
             h = self.card(num, name); self.assertIn("DEMO DATA", h); self.assertIn("registry-card", h)
             if expect: self.assertIn(expect.lower(), visible(h).lower())
+            self.assertNotIn("on sebi's register", visible(h).lower()); self.assertNotIn("sebi's current list", visible(h).lower())   # turn 4: demo card must never read as a live SEBI result
 
     def test_hindi_card_has_hindi_reminder(self):
         self.assertIn("आपसे किसने संपर्क किया", self.card("INA000000201", "", "hi"))
@@ -222,6 +267,19 @@ class TestRegistryStep(Base):
         r = webapp.run_registry(st, {"number": "INA000000201", "name": "x"}, "ip")[1]
         self.assertIn(r["card"]["status"], ("SOURCE_UNAVAILABLE", "SOURCE_ERROR", "NOT_CHECKABLE"))
         self.assertNotEqual(r["card"]["status"], "CONFIRMED_IN_REGISTER")
+
+
+class TestRegistryDemoWording(Base):
+    def test_synthetic_demo_nature_is_explicit_on_form_and_card(self):
+        """Demo sprint 3 (P2): English form and card say synthetic / made-up, demonstration, no SEBI or NSDL register queried, cannot verify a real registration."""
+        c, page, _ = self.req("/check", {"situation": "NO_ACTION_YET", "text": SCAM, "output_language": "en"}); t = visible(page)
+        for must in ("DEMO ONLY", "made-up (synthetic) sample entries, not a real register", "It does not contact SEBI", "queries no SEBI or NSDL register", "It cannot verify any real registration"):
+            self.assertIn(must, t)
+        c2, card, _ = self.req("/registry", {"situation": "UNSURE", "number": "INA000000201", "name": "", "output_language": "en"}); tc = visible(card)
+        for must in ("DEMO DATA: made-up sample entries, not a real register", "No live SEBI or NSDL register was queried", "nothing below verifies a real registration", "DEMO RESULT (sample data, not SEBI)"):
+            self.assertIn(must, tc)
+        for bad in ("Verified SEBI", "Secure Sandbox", "Official API", "NSDL Registry Snapshot"):
+            self.assertNotIn(bad, t + tc)
 
 
 class TestRobustness(Base):

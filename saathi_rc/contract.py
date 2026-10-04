@@ -67,14 +67,21 @@ FOLLOWUP_QUESTIONS = {
 COND_PREFIX = {"en": "If you have already paid, shared a code or password, or clicked or installed something: ",
                "hi": "यदि आप पैसे भेज चुके हैं, कोड या पासवर्ड साझा कर चुके हैं, या कुछ क्लिक या इंस्टॉल कर चुके हैं: "}
 
+# The conditional block ("if you have already paid ...") is three separate steps. Only the FIRST carries the full condition (COND_PREFIX); the next two
+# start with COND_FOLLOW instead of repeating it. A_CALL_1930 also uses COND_TEXT inside the block, because its own "If money has already gone ..." clause
+# would otherwise state a second condition in the same sentence. Before this change all three steps repeated the full prefix and the 1930 step carried both.
+COND_FOLLOW = {"en": "In that case, also ", "hi": "ऐसी स्थिति में यह भी करें: "}
+COND_TEXT = {"A_CALL_1930": {"en": "call 1930 (national cyber-fraud helpline) or report at cybercrime.gov.in as soon as possible.",
+                             "hi": "तुरंत 1930 (राष्ट्रीय साइबर-धोखाधड़ी हेल्पलाइन) पर कॉल करें या cybercrime.gov.in पर रिपोर्ट करें।"}}
+
 # ---- actions: core actions + two new ones (sources are existing corpus passages)
 ACTIONS = dict(CORE_ACTIONS)
-ACTIONS["A_STOP_PAYMENT"] = dict(sources=["SEBI-PR14-2026-b", "LEGALBABU-FIRSTHOUR"],
+ACTIONS["A_STOP_PAYMENT"] = dict(sources=["SEBI-PR14-2026-b", "RBI-LIMITED-LIABILITY"],
     en="Do not complete this payment. If you have already approved it or entered your PIN, contact your bank at once through its official number or app.",
     hi="यह भुगतान पूरा न करें। यदि आप इसे मंज़ूर कर चुके हैं या पिन डाल चुके हैं, तो तुरंत बैंक के आधिकारिक नंबर या ऐप से संपर्क करें।")
-ACTIONS["A_HAVE_DETAILS"] = dict(sources=["LEGALBABU-FIRSTHOUR"],
-    en="Keep these ready when you call: the transaction ID (UTR), the exact amount, the date and time, and the receiving UPI ID, account number or wallet.",
-    hi="कॉल करते समय ये तैयार रखें: लेन-देन आईडी (UTR), सटीक राशि, तारीख और समय, और पाने वाली UPI आईडी, खाता संख्या या वॉलेट।")
+ACTIONS["A_HAVE_DETAILS"] = dict(sources=["NCRP-FIN-MANUAL"],
+    en="Keep these ready when you call 1930: your mobile number, the name of the bank or wallet that was debited, the account or UPI ID it was debited from, the transaction ID and date, and a screenshot of the transaction if you have one. Also useful if you know them, though the official guide does not list them: the exact amount and time, and the receiving UPI ID, account or wallet.",
+    hi="1930 पर कॉल करते समय ये तैयार रखें: आपका मोबाइल नंबर, जिस बैंक या वॉलेट से पैसे कटे उसका नाम, जिस खाते या UPI आईडी से पैसे कटे वह, लेन-देन आईडी और तारीख, और लेन-देन का स्क्रीनशॉट (यदि हो)। यदि पता हो तो ये भी उपयोगी हैं, हालाँकि आधिकारिक मार्गदर्शिका में इनका उल्लेख नहीं है: सटीक राशि और समय, और पाने वाली UPI आईडी, खाता या वॉलेट।")
 ESCALATION_SET = ["A_CONTACT_BANK", "A_CALL_1930", "A_PRESERVE_EVIDENCE"]
 URGENT_REQUIRED = {"A_CONTACT_BANK", "A_CALL_1930"}
 ESCALATE_STEPS = ["A_CONTACT_BANK", "A_CALL_1930", "A_HAVE_DETAILS", "A_PRESERVE_EVIDENCE", "A_NO_PAY_NO_SHARE"]
@@ -82,10 +89,10 @@ ESCALATE_STEPS = ["A_CONTACT_BANK", "A_CALL_1930", "A_HAVE_DETAILS", "A_PRESERVE
 HEADLINE = {
     "NEEDS_SITUATION": {"en": "Before anything else, tell us what has already happened. The answer changes what you should do first.",
                         "hi": "सबसे पहले बताइए कि अब तक क्या हुआ है। इसी से तय होता है कि आपको सबसे पहले क्या करना चाहिए।"},
-    "ESCALATE": {"en": "Act now. Money or access may already be at risk. Contact your bank through its official number or app, then call 1930 or report at cybercrime.gov.in. Official channels cannot promise that money will be returned.",
-                 "hi": "अभी कदम उठाइए। पैसे या खाते की पहुँच खतरे में हो सकती है। बैंक के आधिकारिक नंबर या ऐप से संपर्क करें, फिर 1930 पर कॉल करें या cybercrime.gov.in पर रिपोर्ट करें। आधिकारिक माध्यम पैसे लौटने का वादा नहीं कर सकते।"},
-    "ASK_FOLLOWUP": {"en": "One thing to check before looking at the message: have you already paid, shared a code or password, or clicked or installed anything? If the answer to any question is yes, use the urgent steps below and submit again choosing that option.",
-                     "hi": "संदेश देखने से पहले एक बात: क्या आप पैसे भेज चुके हैं, कोड या पासवर्ड साझा कर चुके हैं, या कुछ क्लिक या इंस्टॉल कर चुके हैं? किसी भी सवाल का जवाब हाँ हो तो नीचे दिए ज़रूरी कदम उठाएँ और वही विकल्प चुनकर दोबारा भेजें।"},
+    "ESCALATE": {"en": "Act now. Money or access may already be at risk. Do the steps below in this order: your bank, then 1930 or cybercrime.gov.in, then keep your evidence. Official channels cannot promise that money will be returned.",
+                 "hi": "अभी कदम उठाइए। पैसे या खाते की पहुँच खतरे में हो सकती है। नीचे के कदम इसी क्रम में करें: पहले आपका बैंक, फिर 1930 या cybercrime.gov.in, फिर सबूत सुरक्षित रखें। आधिकारिक माध्यम पैसे लौटने का वादा नहीं कर सकते।"},
+    "ASK_FOLLOWUP": {"en": "One question first: have you already paid, shared a code or password, or clicked or installed anything? If the answer to any question below is yes, do the urgent steps in order (your bank, then 1930 or cybercrime.gov.in, then evidence), then choose that option in the form and check again.",
+                     "hi": "पहले एक सवाल: क्या आप पैसे भेज चुके हैं, कोड या पासवर्ड साझा कर चुके हैं, या कुछ क्लिक या इंस्टॉल कर चुके हैं? नीचे के किसी भी सवाल का जवाब हाँ हो तो ज़रूरी कदम इसी क्रम में करें (पहले आपका बैंक, फिर 1930 या cybercrime.gov.in, फिर सबूत), फिर फ़ॉर्म में वही विकल्प चुनकर दोबारा जाँचें।"},
     "HIGH_CONCERN": {"en": "Several warning signs were found. Do not pay or share anything until you have checked this through official channels.",
                      "hi": "कई चेतावनी संकेत मिले हैं। आधिकारिक माध्यम से जाँच किए बिना कुछ भी न भेजें और कोई जानकारी साझा न करें।"},
     "SOME_CONCERN": {"en": "Some warning signs were found. Check through official channels before you act.", "hi": "कुछ चेतावनी संकेत मिले हैं। कदम उठाने से पहले आधिकारिक माध्यम से जाँच करें।"},
@@ -112,13 +119,13 @@ WHY = {"en": {"prefix": "Why this is not a clean result: ", "surface": "the mess
 PAUSE_HEAD = {"en": "Pause before paying. Nothing has been lost yet; this is the moment when stopping matters most.",
               "hi": "भुगतान करने से पहले रुकिए। अभी कुछ नहीं गया है; रुकना सबसे ज़रूरी अभी ही है।"}
 UNAVAILABLE_TEXT = {
-    "en": {"REGISTRY_NOT_CHECKED": "A SEBI registration number appears in the text. It has not been checked unless you ask for the register check below.",
+    "en": {"REGISTRY_NOT_CHECKED": "A SEBI registration number appears in the text. It has not been checked against SEBI. This release offers only an optional demo checker below, which uses invented sample data and does not contact SEBI.",
            "LINK_NOT_OPENED": "Links in the message were not opened or tested.", "PAYEE_NOT_CHECKED": "Phone numbers and payment IDs in the message were not checked against any list.",
            "SOURCES_STALE": "The sources behind this tool are old, so claim results are shown as not enough evidence.", "SOURCES_AGING": "The sources behind this tool were collected some time ago; guidance may have changed.",
            "LANGUAGE_LIMITED": "Support for this language is limited: warning signs may be missed.", "LANGUAGE_UNSUPPORTED": "This language is not supported: only language-independent signs such as links can be seen.",
            "IMAGE_NOT_READ": "Images are not read. Type or paste the text of the message.",
            "OUTPUT_LANGUAGE_FALLBACK": "The language you asked for is not available. This result is shown in English; Hindi is also available."},
-    "hi": {"REGISTRY_NOT_CHECKED": "पाठ में सेबी पंजीकरण संख्या है। जब तक आप नीचे रजिस्टर जाँच नहीं माँगते, इसकी जाँच नहीं हुई है।",
+    "hi": {"REGISTRY_NOT_CHECKED": "पाठ में सेबी पंजीकरण संख्या है। इसे सेबी से नहीं जाँचा गया है। इस संस्करण में नीचे केवल एक वैकल्पिक डेमो जाँच है, जो काल्पनिक नमूना डेटा का उपयोग करती है और सेबी से संपर्क नहीं करती।",
            "LINK_NOT_OPENED": "संदेश के लिंक खोले या जाँचे नहीं गए।", "PAYEE_NOT_CHECKED": "संदेश के फ़ोन नंबर और भुगतान आईडी किसी सूची से नहीं मिलाए गए।",
            "SOURCES_STALE": "इस टूल के स्रोत पुराने हैं, इसलिए दावों के नतीजे 'पर्याप्त प्रमाण नहीं' दिखाए गए हैं।", "SOURCES_AGING": "इस टूल के स्रोत कुछ समय पहले जुटाए गए थे; मार्गदर्शन बदल चुका हो सकता है।",
            "LANGUAGE_LIMITED": "इस भाषा का समर्थन सीमित है: चेतावनी संकेत छूट सकते हैं।", "LANGUAGE_UNSUPPORTED": "इस भाषा का समर्थन नहीं है: केवल भाषा-निरपेक्ष संकेत, जैसे लिंक, देखे जा सकते हैं।",

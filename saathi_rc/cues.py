@@ -167,3 +167,14 @@ def structural_pattern(surf):
     if ask and len(hits) >= 2 and (push or channel) and ("pressure_terms" in s or "return_figures" in s):
         return "SOME_CONCERN", hits
     return None, hits
+
+
+# Safety sprint S-2 (2026-10-05): a link + a stated CONSEQUENCE (service cut, account blocked/expired...) + an action to take is the common shape of link phishing even when the text names no money or
+# credential (S1 C13: "Your electricity will be cut tonight ... click http://..."). Consequence words are deliberately narrower than generic urgency ("today", "now"). ADV-1/ADV-2 (2026-10-05): plain expiry, lapse, cancellation and penalty wording was REMOVED because routine reminders (plan or policy expiry with a renewal link) matched it; an expiry-type scam ("your number will expire, click ...") is therefore no longer caught by this rule.
+_CONSEQUENCE = re.compile(r"(?i)\b(?:will be|get|gets|being|be|is|are|has been|have been)\s+(?:\w+\s+){0,2}?(?:cut|disconnected|blocked|suspended|deactivated|terminated|closed|frozen|seized|forfeited)\b|\b(?:disconnection|suspension|deactivation|termination|blacklisted)\b|\bwill\s+(?:stop working)\b")
+_LINK_ACTION = re.compile(r"(?i)\b(?:click|tap|open|visit|update|verify|confirm|log ?in|submit|complete|renew|recharge|pay|call|contact|reply)\b")
+
+
+def link_threat_pattern(surf, text):
+    """-> True when the text has a link, an action to take and a stated consequence. Used ONLY to move CANNOT_ASSESS to SOME_CONCERN (never HIGH); pattern match, not proof."""
+    return "url" in set(surf) and bool(_CONSEQUENCE.search(text or "")) and bool(_LINK_ACTION.search(text or ""))

@@ -29,7 +29,7 @@ rc2 disclosed trade-offs: new over-escalations B07 and B08 (ordinary extra-charg
 The comparison of rc1 and rc2 over 474 earlier cases (no posture changes found) and the registry replay are **not reproducible from this repository** (they need the frozen rc1 tree and removed files).
 
 ## What was run for this release preparation (see the audit report for logs)
-* Unit and web tests: 169 tests, OK, 1 expected failure (documents R03).
+* Unit and web tests: 173 tests, OK, 1 expected failure (documents R03).
 * Mutation checks: 15 deliberate breakages of the incident logic, "mutations NOT caught: 0".
 * `eval/run_sprint.py`: 54 scored, 53 pass, `['R03']`.
 * `eval/run_suite.py cases_s1.jsonl <outdir>`: runs and reports its failure buckets.

@@ -12,7 +12,7 @@
 | Data | Where | Nature |
 |---|---|---|
 | Register fixture (8 entries) | `eval/registry_fixture.json` | **Synthetic** invented names and numbers, not SEBI data. One trade name ("Kuber Alpha Research") may coincide with a real trade name; origin unverified. |
-| Source list (42 sources) | `saathi_rc/sources/corpus.json` | **Real third-party references**: publisher names, page titles and URLs (snapshot 2026-10-02). Excerpt text was removed in this variant; titles and URLs are still third-party material and have not been cleared with their publishers. |
+| Source list (45 entries, 29 distinct pages) | `saathi_rc/sources/corpus.json` | **Real third-party references**: publisher names, page titles and URLs (snapshot 2026-10-02). Excerpt text was removed in this variant; titles and URLs are still third-party material and have not been cleared with their publishers. |
 | Author-written case sets (392 cases) | `eval/cases_*.jsonl`, `results/incident_state/raw_results.jsonl` | Invented messages. A case-insensitive search of this release found **no real adviser registration numbers and none of the real SEBI-registered firm names that were found elsewhere in the development workspace**. Benign real consumer brands (for example Zomato, Netflix, Amazon, Reliance Retail) appear in some example messages. |
 | Test values | `tests/`, `eval/` | Fake-looking UPI handles, 98765xxxxx phone numbers, the public test card pattern 4111 1111 1111 1111 and PAN-shaped strings. Appear synthetic; not verified against real people. |
 

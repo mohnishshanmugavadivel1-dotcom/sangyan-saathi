@@ -5,7 +5,7 @@ Deterministic, offline (no network, no model calls), does not store or log the i
 import re
 from . import VERSION, CONTRACT_VERSION, clock
 from .contract import *
-from .cues import situation_conflict_cues, pending_cues, surface_of, structural_pattern, credential_request, other_cues, PAST_VERB, SUBJ, _CLAUSE_SPLIT as _LEGACY_SPLIT, _verb_negated
+from .cues import situation_conflict_cues, pending_cues, surface_of, structural_pattern, link_threat_pattern, credential_request, other_cues, PAST_VERB, SUBJ, _CLAUSE_SPLIT as _LEGACY_SPLIT, _verb_negated
 from . import incident as inc_mod
 from .core.pipeline import analyze as analyze_core, get_corpus
 from .core.normalize import normalize, mask_sensitive
@@ -24,16 +24,17 @@ def _lang(req):
     return l if l in LANGS else "en"
 
 
-def step(aid, lang, conditional=False, urgent=False):
+def step(aid, lang, conditional=False, urgent=False, follow=False):
     a = ACTIONS[aid]
     txt = a.get(lang) or a["en"]
     if conditional:
-        txt = COND_PREFIX[lang] + (txt[0].lower() + txt[1:] if lang == "en" else txt)
+        txt = (COND_TEXT.get(aid) or {}).get(lang) or txt
+        txt = (COND_FOLLOW if follow else COND_PREFIX)[lang] + (txt[0].lower() + txt[1:] if lang == "en" else txt)
     return {"action_id": aid, "text": txt, "sources": list(a["sources"]), "conditional": conditional, "urgent": urgent}
 
 
 def cond_block(lang):
-    return [step(a, lang, True) for a in ESCALATION_SET]
+    return [step(a, lang, True, follow=(i > 0)) for i, a in enumerate(ESCALATION_SET)]
 
 
 def _base(req, lang, situation, posture, urgent=(), steps=(), **kw):
@@ -295,6 +296,9 @@ def _analyze(req, lang, situation, corpus):
     if sp and posture in ("CANNOT_ASSESS", "ABSTAIN"):
         posture = sp
         inds.append({"indicator": "REQUEST_PATTERN", "snippet": "(overall shape of the message)", "note": "asks for money or codes, gives a link/number/payment ID to act on, and uses pressure or big promises; this combination is common in scams (pattern match, not proof)"})
+    if not sp and posture == "CANNOT_ASSESS" and link_threat_pattern(surf, norm["text"]):   # safety sprint S-2: SOME_CONCERN at most, never HIGH
+        posture = "SOME_CONCERN"
+        inds.append({"indicator": "REQUEST_PATTERN", "snippet": "(overall shape of the message)", "note": "gives a link to act on and warns of a consequence (a block, cut or expiry) if you do not; this combination is common in scams (pattern match, not proof)"})
     if posture == "ABSTAIN" and (inds or any(c["state"] in BAD for c in claims)):
         posture = "CANNOT_ASSESS"
     if pending and posture == "ABSTAIN":
